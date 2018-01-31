@@ -1,0 +1,125 @@
+<!--
+  Generated template for the FeedPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title></ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-refresher (ionRefresh)="Refresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown"
+                               pullingText="Pull to refresh"
+                               refreshingSpinner="circles"
+                               refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+
+   
+
+    <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
+    <ion-card *ngFor="let user of users">
+        <h1 id="usersId"></h1>
+
+        <ion-item>
+            <ion-avatar item-left>
+                <img src={{user.photoURL}}/>
+            </ion-avatar>
+            <h2 (click)="viewProfile(user.userId)">{{user?.firstName}} {{user?.lastName}}</h2>
+        </ion-item>
+    </ion-card>
+
+   
+    <!--
+    <button ion-button icon-only (click)="getPosts()">
+        get Posts
+        <ion-icon name="getUser"></ion-icon>
+    </button>
+
+    <button ion-button icon-only (click)="getFollowing()">
+        who am I following?
+        <ion-icon name="getFollowing"></ion-icon>
+    </button>
+
+    <button ion-button icon-only (click)="viewMyProfile()">
+        My Profile
+        <ion-icon name="viewMyProfile"></ion-icon>
+    </button>
+    -->
+
+    <ion-card *ngFor="let item of items">
+
+
+        <ion-item>
+            <ion-avatar item-left>
+                <img src={{item.photoURL}} />  
+            </ion-avatar>
+            <h2 (click)="viewProfile(item.userId)">{{item.firstName}} {{item.lastName}}</h2>
+            <p>{{item.date}}</p>
+        </ion-item>
+
+
+        <!--<img src="{{tweet.extended_entities.media[0].media_url}}" *ngIf="tweet.extended_entities">-->
+
+
+        <ion-card-content>
+            <p>{{item.text}}</p>
+            <img src={{item.postPhotoURL}} *ngIf="item.postPhotoURL">
+
+
+            <ion-badge item-end>{{item.score}}</ion-badge>
+            <ion-badge style="float: right;" (click)="viewPost(item.userId, item.postId)" item-end>View Replies</ion-badge>
+            
+          <!-- <button style="float: right;" (click)="viewPost(item.userId, item.postId)">View Replies</button> --> 
+        </ion-card-content>
+
+       
+
+
+        <!--<ion-row>
+            <ion-col *ngIf="tweet.entities.urls.length > 0">
+                <button ion-button clear small (click)="openLinkUrl(tweet.entities.urls[0].url)">
+                    <ion-icon name="open"></ion-icon>
+                    <div>Open Link</div>
+                </button>
+            </ion-col>
+        </ion-row>-->
+
+
+    </ion-card>
+
+    <div *ngIf="items?.length < 1">
+        <hr>
+        <p>
+            No Posts found :(
+        </p>
+    </div>
+
+    
+
+    <ion-fab center bottom>
+        <button ion-fab color="danger"><ion-icon name="md-arrow-dropup-circle"></ion-icon></button>
+        <ion-fab-list side="top" (click)="showPrompt()">
+            <button ion-fab color="primary"><ion-icon name="md-add-circle" ></ion-icon></button>
+        </ion-fab-list>
+        <ion-fab-list side="left" (click)="postPhoto()">
+            <button ion-fab color="light"><ion-icon name="ios-camera-outline" ></ion-icon></button>
+        </ion-fab-list>
+        <ion-fab-list side="right" (click)="viewMyProfile()">
+            <button ion-fab color="dark"><ion-icon name="md-person" ></ion-icon></button>
+        </ion-fab-list>
+    </ion-fab>
+
+
+
+
+</ion-content>

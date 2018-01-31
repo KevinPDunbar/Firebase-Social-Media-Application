@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+   <h1>Logged In</h1>
+    <h2>Home Page</h2>
+    <h3 id="firstName">FIRSTNAMEHERE</h3>
+      <button ion-button icon-only (click)="logOut()"> log out
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+
+    <button ion-button icon-only (click)="getUser()">
+        get User
+        <ion-icon name="getUser"></ion-icon>
+    </button>
+
+    <button ion-button icon-only (click)="goToEditUser()">
+        Edit User
+        <ion-icon name="goToEditUser"></ion-icon>
+    </button>
+
+    <button ion-button icon-only (click)="goToFeed()">
+        Feed
+        <ion-icon name="goToEditUser"></ion-icon>
+    </button>
+
+    <button ion-button icon-only (click)="goToNewPost()">
+        New Post
+        <ion-icon name="goToNewPost"></ion-icon>
+    </button>
+
+
+  
+</ion-content>

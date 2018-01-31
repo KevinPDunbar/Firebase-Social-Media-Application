@@ -1,0 +1,64 @@
+<!--
+  Generated template for the MyProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title></ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-fab top right (click)="editProfile()">
+        <button ion-fab>
+            <ion-icon name="ios-construct-outline"></ion-icon>
+        </button>
+
+    </ion-fab>
+
+    <ion-refresher (ionRefresh)="Refresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown"
+                               pullingText="Pull to refresh"
+                               refreshingSpinner="circles"
+                               refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-card *ngFor="let user of users">
+        <img style="width: 100%; height: auto;" src={{user.photoURL}} />
+
+        <h1>{{user.firstName}} {{user.lastName}}</h1>
+        <p>{{user.aboutMe}}</p>
+    </ion-card>
+    <ion-card *ngFor="let post of posts">
+
+        <ion-item>
+            <ion-avatar item-left>
+                <img src={{post.photoURL}}/>
+            </ion-avatar>
+            <h2>{{post.name}}</h2>
+            <p>{{post.date}}</p>
+        </ion-item>
+
+        <ion-card-content>
+            <p>{{post.text}}</p>
+            <img src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
+
+            <ion-badge item-end>{{post.score}}</ion-badge>
+            <ion-badge style="float: right;" (click)="viewPost(post.userId, post.postId)" item-end>View Replies</ion-badge>
+        </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="posts?.length < 1">
+        <hr>
+        <p>
+            No Posts found :(
+        </p>
+    </div>
+
+</ion-content>
