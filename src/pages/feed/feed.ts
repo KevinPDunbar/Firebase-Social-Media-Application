@@ -9,6 +9,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ViewProfilePage } from '../view-profile/view-profile';
 import { MyProfilePage } from '../my-profile/my-profile';
 import { ViewPostPage } from '../view-post/view-post';
+import { SearchPage } from '../search/search';
 
 /**
  * Generated class for the FeedPage page.
@@ -45,6 +46,8 @@ export class FeedPage {
         this.items = [];
         this.users = [];
         this.getFollowing();
+
+        console.log("REFRESHER: " + refresher);
 
         setTimeout(() => {
             console.log('Async operation has ended');
@@ -170,7 +173,7 @@ export class FeedPage {
 
                 //next step
                 for (let i = 0; i <= following.length; i++) {
-                    let query2 = firebase.database().ref("/Posts/" + following[i] + "/").orderByKey();
+                    let query2 = firebase.database().ref("/Posts/" + following[i] + "/").orderByChild("Date");
                     query2.once("value")
                         .then(function (snapshot) {
                             snapshot.forEach(function (childSnapshot) {
@@ -449,6 +452,11 @@ export class FeedPage {
         var newPostKey = firebase.database().ref().child('/Posts').push().key;
         console.log(newPostKey);
 
+    }
+
+    goToSearch()
+    {
+        this.navCtrl.push(SearchPage);
     }
 
 

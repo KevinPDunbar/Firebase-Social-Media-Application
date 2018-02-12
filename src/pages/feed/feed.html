@@ -26,7 +26,7 @@
 
    
 
-    <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
+   <!-- <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
     <ion-card *ngFor="let user of users">
         <h1 id="usersId"></h1>
 
@@ -36,25 +36,9 @@
             </ion-avatar>
             <h2 (click)="viewProfile(user.userId)">{{user?.firstName}} {{user?.lastName}}</h2>
         </ion-item>
-    </ion-card>
+    </ion-card> -->
 
-   
-    <!--
-    <button ion-button icon-only (click)="getPosts()">
-        get Posts
-        <ion-icon name="getUser"></ion-icon>
-    </button>
-
-    <button ion-button icon-only (click)="getFollowing()">
-        who am I following?
-        <ion-icon name="getFollowing"></ion-icon>
-    </button>
-
-    <button ion-button icon-only (click)="viewMyProfile()">
-        My Profile
-        <ion-icon name="viewMyProfile"></ion-icon>
-    </button>
-    -->
+  
 
     <ion-card *ngFor="let item of items">
 
@@ -105,8 +89,8 @@
     </div>
 
     
-
-    <ion-fab center bottom>
+    
+    <ion-fab style="margin-bottom: 50px;" center bottom>
         <button ion-fab color="danger"><ion-icon name="md-arrow-dropup-circle"></ion-icon></button>
         <ion-fab-list side="top" (click)="showPrompt()">
             <button ion-fab color="primary"><ion-icon name="md-add-circle" ></ion-icon></button>
@@ -116,6 +100,9 @@
         </ion-fab-list>
         <ion-fab-list side="right" (click)="viewMyProfile()">
             <button ion-fab color="dark"><ion-icon name="md-person" ></ion-icon></button>
+        </ion-fab-list>
+        <ion-fab-list side="bottom" (click)="goToSearch()">
+            <button ion-fab color="dark"><ion-icon name="md-search"></ion-icon></button>
         </ion-fab-list>
     </ion-fab>
 

@@ -31,13 +31,13 @@
         <p>{{user.aboutMe}}</p>
 
         <script>amIFollowing()</script>
-        <button id="followButton" (click)="followButton()" ion-button color="light">Follow</button>
+        
+    </ion-card>
 
-        <button id="followButtonnnnnn" (click)="followUser()">Follow</button>
+    <ion-card *ngFor="let follow of follows">
 
-        <button (click)="amIFollowing()">AM I Followowing</button>
-
-        <button (click)="unFollowUser()">Unfollow</button>
+        <button (click)="followUser()" *ngIf="follow.following === false">Follow</button>
+        <button (click)="unFollowUser()" *ngIf="follow.following === true">UnFollow</button>
     </ion-card>
 
     <ion-card *ngFor="let post of posts">

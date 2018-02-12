@@ -14,6 +14,7 @@ import { ViewProfilePage } from '../pages/view-profile/view-profile';
 import { MyProfilePage } from '../pages/my-profile/my-profile';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 import { ViewPostPage } from '../pages/view-post/view-post';
+import { SearchPage } from '../pages/search/search';
 
 import { Login } from '../pages/login/login';
 
@@ -44,7 +45,8 @@ import { Camera } from '@ionic-native/camera';
       ViewProfilePage,
       MyProfilePage,
       EditProfilePage,
-      ViewPostPage
+      ViewPostPage,
+      SearchPage
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { Camera } from '@ionic-native/camera';
       ViewProfilePage,
       MyProfilePage,
       EditProfilePage,
-      ViewPostPage
+      ViewPostPage,
+      SearchPage
   ],
   providers: [
       AuthData,

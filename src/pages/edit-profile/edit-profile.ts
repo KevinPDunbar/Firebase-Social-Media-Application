@@ -48,6 +48,17 @@ export class EditProfilePage {
       }, 2000);
   }
 
+  Refreshh() {
+      console.log('Begin async operation');
+      this.users = [];
+      this.getMyProfile();
+
+      setTimeout(() => {
+          console.log('Async operation has ended');
+          //refresher.complete();
+      }, 2000);
+  }
+
   async takeProfilePicture()
   {
       let userId = firebase.auth().currentUser.uid;
@@ -101,14 +112,20 @@ export class EditProfilePage {
       let firstName;
       let lastName;
       let photoUrl;
+      let aboutMe;
 
       let userPostKeys = [];
+
+      let textArea = document.getElementById("aboutMe");
 
 
       let userQuery = firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
           firstName = (snapshot.val() && snapshot.val().firstName) || 'first name';
           lastName = (snapshot.val() && snapshot.val().lastName) || 'last name';
           photoUrl = (snapshot.val() && snapshot.val().profilePicture) || 'last name';
+          aboutMe = (snapshot.val() && snapshot.val().aboutMe) || 'last name';
+          
+
 
           userClone.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoUrl });
 
@@ -126,8 +143,7 @@ export class EditProfilePage {
       let lastName = this.editProfileForm.value.lastName;
       let aboutMe = this.editProfileForm.value.aboutMe;
 
-
-      console.log("First Name :" + firstName + " Last Name :" + lastName);
+      console.log("First Name :" + firstName + " Last Name :" + lastName + " About Me: " + aboutMe);
 
 
 
@@ -137,8 +153,13 @@ export class EditProfilePage {
           firebase.database().ref('/userProfile/' + userId).child('firstName').set(firstName);
           firebase.database().ref('/userProfile/' + userId).child('lastName').set(lastName);
           firebase.database().ref('/userProfile/' + userId).child('aboutMe').set(aboutMe);
-
+          
+   
       });
+      this.Refreshh();
+    
+
+      
   }
 
 }

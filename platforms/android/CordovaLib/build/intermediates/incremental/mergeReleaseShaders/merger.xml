@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Users\kevin\FirebaseExample\platforms\android\CordovaLib\src\main\shaders"/></dataSet><dataSet config="release"><source path="C:\Users\kevin\FirebaseExample\platforms\android\CordovaLib\src\release\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Users\kevin\Firebase-Social-Media-Application\platforms\android\CordovaLib\src\main\shaders"/></dataSet><dataSet config="release"><source path="C:\Users\kevin\Firebase-Social-Media-Application\platforms\android\CordovaLib\src\release\shaders"/></dataSet></merger>

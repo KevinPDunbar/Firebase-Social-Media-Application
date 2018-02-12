@@ -34,7 +34,7 @@
 
         <h1>{{user.firstName}} {{user.lastName}}</h1>
 
-        <form [formGroup]="editProfileForm" (submit)="updateProfile()" novalidate>
+        <form [formGroup]="editProfileForm" value="" (submit)="updateProfile()" novalidate>
             <!--divs-->
             <div class="row responsive-md">
                 <div class="col col-50 col-offset-25">
@@ -42,17 +42,17 @@
 
                     <ion-item>
                         <ion-label stacked>First Name</ion-label>
-                        <ion-input #firstName formControlName="firstName" type="text" placeholder="{{user.firstName}}"></ion-input>
+                        <ion-input id="firstNameInput" #firstName formControlName="firstName" type="text" >"{{user.firstName}}"</ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-label stacked>Last Name</ion-label>
-                        <ion-input #lastName formControlName="lastName" type="text" placeholder="{{user.lastName}}"></ion-input>
+                        <ion-input #lastName formControlName="lastName" type="text" >"{{user.lastName}}"</ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-label stacked>About Me</ion-label>
-                        <ion-textarea #aboutMe formControlName="aboutMe" type="text" placeholder="{{user.aboutMe}}"></ion-textarea>
+                        <ion-textarea  #aboutMe formControlName="aboutMe" value="{{user.aboutMe}}" type="text"></ion-textarea>
                     </ion-item>
 
 

@@ -21,6 +21,11 @@ export class ViewProfilePage {
     public posts = [];
     public users = [];
 
+    public follows = [];
+
+    
+
+
     public isFollowing = false;
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -28,20 +33,24 @@ export class ViewProfilePage {
         this.passedUserId = navParams.get("userId");
         console.log("PASSED USER ID : " + this.passedUserId);
         let userId = this.passedUserId;
+        
   }
 
   ionViewDidLoad() {
       console.log('ionViewDidLoad ViewProfilePage');
       this.getUserPosts();
-
+      this.amIFollowing();
+      //this.follows.push({ "following": false });
 
   }
+
 
   Refresh(refresher) {
       console.log('Begin async operation');
       this.posts = [];
       this.users = [];
       this.getUserPosts();
+      this.amIFollowing();
 
       setTimeout(() => {
           console.log('Async operation has ended');
@@ -63,6 +72,7 @@ export class ViewProfilePage {
 
   getUserPosts()
   {
+
 
       let userId = this.passedUserId;
 
@@ -92,8 +102,6 @@ export class ViewProfilePage {
           photoURL = snapshot.val().profilePicture;
 
           userClone.push({ "firstName": firstName, "lastName": lastName, "aboutMe": aboutMe, "photoURL": photoURL });
-
-
       });
 
 
@@ -149,7 +157,6 @@ export class ViewProfilePage {
               }
           });
 
-      
 
   }
 
@@ -159,10 +166,17 @@ export class ViewProfilePage {
       let userId = firebase.auth().currentUser.uid;
 
       let followButton = document.getElementById("followButton");
+      let unfollowButton = document.getElementById("unfollowButton");
 
       let amIFollowing = this.isFollowing;
       let following;
       let name;
+
+      this.follows = [];
+      let followsClone = this.follows;
+      //followsClone = [];
+
+      
 
       firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
 
@@ -175,7 +189,10 @@ export class ViewProfilePage {
               {
                   console.log("You are following this user already");
                   amIFollowing = true;
-                  followButton.innerHTML = "Unfollow";
+                  //followButton.innerHTML = "Unfollow";
+                  //followButton.style.display = "none";
+                    
+                                    
                   
               }
               
@@ -184,12 +201,14 @@ export class ViewProfilePage {
           if (amIFollowing === true)
           {
               console.log("You are following this user already");
-              followButton.innerHTML = "Unfollow";
+              //followButton.innerHTML = "Unfollow";
+              followsClone.push({ "following": true });
           }
           else
           {
               console.log("You are NOT following this user already");
-              followButton.innerHTML = "Follow";
+              //followButton.innerHTML = "Follow";
+              followsClone.push({ "following": false });
           }
 
       });
