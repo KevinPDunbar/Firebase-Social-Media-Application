@@ -12,6 +12,66 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
+.whiteBackground {
+    background-color: white !important;
+}
+
+.card-content-md {
+    padding: 13px 0px 13px 0px !important;
+    font-size: 1.4rem;
+    line-height: 1.5;
+}
+
+.avatars img {
+    margin: auto;
+    width: 200px !important;
+    height: 200px !important;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+
+.avatars {
+    background-color: #1abc9c;
+}
+
+.scroll-content {
+    margin-top: 20px !important;
+}
+
+.userProfileName  {
+    color: white!important;
+}
+
+.userProfileBio {
+    color: white!important;
+}
+
+.followButton {
+    border: none !important;
+}
+
+.unfollowButton {
+    border: none !important;
+}
+
+.postImage img {
+    padding: 0 !important;
+}
+
+.userSearch {
+    margin-top: 50px;
+}
+
+.label-md {
+     margin: 0 !important;
+}
+
+.item-md.item-block .item-inner  {
+    padding: 0 !important;
+    border-bottom: 1px solid #dedede;
+}
+
 
 
 
@@ -23,13 +83,16 @@ $font-path: "../assets/fonts";
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
-$colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
-);
+$colors: ( primary: #1abc9c, secondary: #32db64, danger: #f53d3d, light: #f4f4f4, dark: #222 );
+
+
+///this changes the nav bar color
+$toolbar-background: #1abc9c;
+
+$background-color: #ecf0f1;
+
+
+//$colors: ( primary: #488aff, secondary: #32db64, danger: #f53d3d, light: #f4f4f4, dark: #222 );
 
 
 // App iOS Variables
@@ -42,6 +105,9 @@ $colors: (
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
+
+$card-md-margin-left: 0;
+$card-md-margin-right: 0; 
 
 
 

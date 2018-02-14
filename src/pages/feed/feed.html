@@ -1,9 +1,3 @@
-<!--
-  Generated template for the FeedPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -13,7 +7,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding-top>
 
     <ion-refresher (ionRefresh)="Refresh($event)">
         <ion-refresher-content pullingIcon="arrow-dropdown"
@@ -24,26 +18,10 @@
     </ion-refresher>
 
 
-   
-
-   <!-- <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
-    <ion-card *ngFor="let user of users">
-        <h1 id="usersId"></h1>
-
-        <ion-item>
-            <ion-avatar item-left>
-                <img src={{user.photoURL}}/>
-            </ion-avatar>
-            <h2 (click)="viewProfile(user.userId)">{{user?.firstName}} {{user?.lastName}}</h2>
-        </ion-item>
-    </ion-card> -->
-
-  
-
-    <ion-card *ngFor="let item of items">
+    <ion-card margin-top class="whiteBackground" *ngFor="let item of items">
 
 
-        <ion-item>
+        <ion-item class="whiteBackground">
             <ion-avatar item-left>
                 <img src={{item.photoURL}} />  
             </ion-avatar>
@@ -51,8 +29,6 @@
             <p>{{item.date}}</p>
         </ion-item>
 
-
-        <!--<img src="{{tweet.extended_entities.media[0].media_url}}" *ngIf="tweet.extended_entities">-->
 
 
         <ion-card-content>
@@ -62,21 +38,8 @@
 
             <ion-badge item-end>{{item.score}}</ion-badge>
             <ion-badge style="float: right;" (click)="viewPost(item.userId, item.postId)" item-end>View Replies</ion-badge>
-            
-          <!-- <button style="float: right;" (click)="viewPost(item.userId, item.postId)">View Replies</button> --> 
+
         </ion-card-content>
-
-       
-
-
-        <!--<ion-row>
-            <ion-col *ngIf="tweet.entities.urls.length > 0">
-                <button ion-button clear small (click)="openLinkUrl(tweet.entities.urls[0].url)">
-                    <ion-icon name="open"></ion-icon>
-                    <div>Open Link</div>
-                </button>
-            </ion-col>
-        </ion-row>-->
 
 
     </ion-card>
@@ -91,18 +54,18 @@
     
     
     <ion-fab style="margin-bottom: 50px;" center bottom>
-        <button ion-fab color="danger"><ion-icon name="md-arrow-dropup-circle"></ion-icon></button>
+        <button ion-fab color="primary"><ion-icon name="md-arrow-dropup-circle"></ion-icon></button>
         <ion-fab-list side="top" (click)="showPrompt()">
-            <button ion-fab color="primary"><ion-icon name="md-add-circle" ></ion-icon></button>
+            <button ion-fab color="background-color"><ion-icon name="ios-add-outline" ></ion-icon></button>
         </ion-fab-list>
         <ion-fab-list side="left" (click)="postPhoto()">
-            <button ion-fab color="light"><ion-icon name="ios-camera-outline" ></ion-icon></button>
+            <button ion-fab color="background-color"><ion-icon name="ios-camera-outline" ></ion-icon></button>
         </ion-fab-list>
         <ion-fab-list side="right" (click)="viewMyProfile()">
-            <button ion-fab color="dark"><ion-icon name="md-person" ></ion-icon></button>
+            <button ion-fab color="background-color"><ion-icon name="ios-person-outline" ></ion-icon></button>
         </ion-fab-list>
         <ion-fab-list side="bottom" (click)="goToSearch()">
-            <button ion-fab color="dark"><ion-icon name="md-search"></ion-icon></button>
+            <button ion-fab color="background-color"><ion-icon name="ios-search-outline"></ion-icon></button>
         </ion-fab-list>
     </ion-fab>
 

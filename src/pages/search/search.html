@@ -1,19 +1,18 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Search</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
-    <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
-    <ion-card *ngFor="let user of users">
-        <h1 id="usersId"></h1>
+    <ion-searchbar class="userSearch" (ionInput)="search($event)"></ion-searchbar>
+    <ion-card class="whiteBackground" *ngFor="let user of users">
 
-        <ion-item>
+        <ion-item class="whiteBackground">
             <ion-avatar item-left>
                 <img src={{user.photoURL}} />
             </ion-avatar>

@@ -14,7 +14,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
     <ion-refresher (ionRefresh)="Refresh($event)">
         <ion-refresher-content pullingIcon="arrow-dropdown"
@@ -24,25 +24,29 @@
         </ion-refresher-content>
     </ion-refresher>
 
-    <ion-card *ngFor="let user of users">
-        <img style="width: 100%; height: auto;" src={{user.photoURL}} />
-
-        <h1>{{user.firstName}} {{user.lastName}}</h1>
-        <p>{{user.aboutMe}}</p>
-
+    <ion-card no-padding style="background-color: #1abc9c;" *ngFor="let user of users">
+        <ion-item style="background-color: #1abc9c;" class="avatars">
+            <ion-avatar>
+                <img  src={{user.photoURL}} />
+            </ion-avatar>
+        </ion-item>
+        <h1 class="userProfileName" text-center>{{user.firstName}} {{user.lastName}}</h1>
+        <p class="userProfileName" text-center>{{user.aboutMe}}</p>
         <script>amIFollowing()</script>
-        
+
+        <section *ngFor="let follow of follows">
+            <button class="followButton" ion-button full outline color="dark" (click)="followUser()" *ngIf="follow.following === false">Follow</button>
+            <button class="unfollowButton" ion-button full outline color="danger" (click)="unFollowUser()" *ngIf="follow.following === true">UnFollow</button>
+        </section>
+
     </ion-card>
 
-    <ion-card *ngFor="let follow of follows">
+   
 
-        <button (click)="followUser()" *ngIf="follow.following === false">Follow</button>
-        <button (click)="unFollowUser()" *ngIf="follow.following === true">UnFollow</button>
-    </ion-card>
 
-    <ion-card *ngFor="let post of posts">
+    <ion-card class="whiteBackground" *ngFor="let post of posts">
 
-        <ion-item>
+        <ion-item class="whiteBackground">
             <ion-avatar item-left>
                 <img src={{post.photoURL}}/>
             </ion-avatar>
@@ -52,7 +56,7 @@
 
         <ion-card-content>
             <p>{{post.text}}</p>
-            <img src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
+            <img class="postImage" src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
 
             <ion-badge item-end>{{post.score}}</ion-badge>
             <ion-badge style="float: right;" (click)="viewPost(post.userId, post.postId)" item-end>View Replies</ion-badge>

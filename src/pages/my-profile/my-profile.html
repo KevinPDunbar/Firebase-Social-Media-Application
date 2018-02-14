@@ -13,11 +13,11 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
     <ion-fab top right (click)="editProfile()">
-        <button ion-fab>
-            <ion-icon name="ios-construct-outline"></ion-icon>
+        <button color="danger" ion-fab>
+            <ion-icon  name="ios-construct-outline"></ion-icon>
         </button>
 
     </ion-fab>
@@ -29,30 +29,57 @@
                                refreshingText="Refreshing...">
         </ion-refresher-content>
     </ion-refresher>
-    <ion-card *ngFor="let user of users">
+
+
+    <ion-card no-padding style="background-color: #1abc9c;" *ngFor="let user of users">
+        <ion-item style="background-color: #1abc9c;" class="avatars">
+            <ion-avatar>
+                <img src={{user.photoURL}} />
+            </ion-avatar>
+        </ion-item>
+        <h1 class="userProfileName" text-center>{{user.firstName}} {{user.lastName}}</h1>
+        <p class="userProfileName" text-center>{{user.aboutMe}}</p>
+        
+    </ion-card>
+
+   <!-- <ion-card  *ngFor="let user of users">
         <img style="width: 100%; height: auto;" src={{user.photoURL}} />
 
         <h1>{{user.firstName}} {{user.lastName}}</h1>
         <p>{{user.aboutMe}}</p>
-    </ion-card>
-    <ion-card *ngFor="let post of posts">
+    </ion-card> -->
 
-        <ion-item>
-            <ion-avatar item-left>
-                <img src={{post.photoURL}}/>
-            </ion-avatar>
-            <h2>{{post.name}}</h2>
-            <p>{{post.date}}</p>
-        </ion-item>
+    <ion-list no-padding no-margin>
+        <ion-item-sliding no-padding no-margin *ngFor="let post of posts">
+            <ion-item no-padding no-margin>
+            <ion-card class="whiteBackground" >
 
-        <ion-card-content>
-            <p>{{post.text}}</p>
-            <img src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
+                <ion-item class="whiteBackground">
+                    <ion-avatar item-left>
+                        <img src={{post.photoURL}} />
+                    </ion-avatar>
+                    <h2>{{post.name}}</h2>
+                    <p>{{post.date}}</p>
+                </ion-item>
 
-            <ion-badge item-end>{{post.score}}</ion-badge>
-            <ion-badge style="float: right;" (click)="viewPost(post.userId, post.postId)" item-end>View Replies</ion-badge>
-        </ion-card-content>
-    </ion-card>
+                <ion-card-content>
+                    <p>{{post.text}}</p>
+                    <img src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
+
+                    <ion-badge item-end>{{post.score}}</ion-badge>
+                    <ion-badge style="float: right;" (click)="viewPost(post.userId, post.postId)" item-end>View Replies</ion-badge>
+                </ion-card-content>
+
+            </ion-card>
+                </ion-item>
+            <ion-item-options no-padding no-margin>
+            <button ion-button color="danger" (click)="deletePost(post)">
+                <ion-icon name="trash"></ion-icon>
+                Delete
+            </button>
+            </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
 
     <div *ngIf="posts?.length < 1">
         <hr>

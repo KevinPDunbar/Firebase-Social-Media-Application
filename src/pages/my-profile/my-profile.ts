@@ -151,4 +151,28 @@ export class MyProfilePage {
 
   }
 
+  deletePost(post) {
+
+      let userId = firebase.auth().currentUser.uid;
+
+      //Remove locally
+      let index = this.posts.indexOf(post);
+
+      if (index > -1) {
+          this.posts.splice(index, 1);
+      }
+
+      console.log("Post is: " + post.postId);
+      //remove from firebase
+      //firebase.database().ref('/Posts/' + userId + '/' _+ post.postId);
+
+      let postRef = firebase.database().ref('/Posts/' + userId);
+      
+
+      postRef.child(post.postId).remove().then(function () {
+          
+      });
+
+  }
+
 }

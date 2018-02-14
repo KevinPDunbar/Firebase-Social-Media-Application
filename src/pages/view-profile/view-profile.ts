@@ -255,6 +255,7 @@ export class ViewProfilePage {
 
 
       });
+      
   }
 
   unFollowUser()
@@ -263,6 +264,7 @@ export class ViewProfilePage {
       let userId = firebase.auth().currentUser.uid;
 
       let following;
+      
 
       firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
 
@@ -278,8 +280,9 @@ export class ViewProfilePage {
           console.log("Following AFTER" + updatedFollowing);
 
           firebase.database().ref('/userProfile/' + userId).child('following').set(updatedFollowing);
-
+          
       });
+    
 
   }
 
@@ -290,6 +293,7 @@ export class ViewProfilePage {
 
       let following = [];
       let name;
+      
 
       firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
           
@@ -303,10 +307,10 @@ export class ViewProfilePage {
           console.log("Following AFTER" + following);
 
           firebase.database().ref('/userProfile/' + userId).child('following').set(following);
-
+          
       });
 
-     
+      
 
       
   }
