@@ -12,6 +12,17 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
+.notificationIcon {
+    color: white;
+    float: right;
+    font-size: 40px;
+}
+
+.notificationIconNumber {
+    color: red;
+    float: right;
+}
+
 .whiteBackground {
     background-color: white !important;
 }

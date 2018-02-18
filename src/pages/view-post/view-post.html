@@ -6,9 +6,11 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title></ion-title>
-  </ion-navbar>
+    <ion-navbar ng-repeat="unreadNotification in unreadNotifications">
+        <ion-title></ion-title>
+        <span class="notificationIconNumber" *ngIf="unreadNotifications?.length > 0">{{unreadNotifications.length}}</span>
+        <ion-icon (click)="goToNotificationsPage()" class="notificationIcon" name="ios-notifications-outline"></ion-icon>
+    </ion-navbar>
 
 </ion-header>
 
@@ -44,7 +46,7 @@
 
     <ion-item>
         <ion-avatar item-left>
-            <img src="https://firebasestorage.googleapis.com/v0/b/login-2aa53.appspot.com/o/anon_user.gif?alt=media&token=723b0c9d-76a6-40ea-ba67-34e058447c0a" />
+            <img src={{comment.photoURL}} />
         </ion-avatar>
         <h2>{{comment.firstName}} {{comment.lastName}}</h2>
         <p>{{comment.date}}</p>

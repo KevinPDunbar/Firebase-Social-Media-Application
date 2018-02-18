@@ -5,7 +5,7 @@ import { AuthData } from '../../providers/auth-data';
 
 import { EditProfilePage } from '../edit-profile/edit-profile';
 import { ViewPostPage } from '../view-post/view-post';
-
+import { NotificationsPage } from '../notifications/notifications';
 
 
 /**
@@ -23,6 +23,7 @@ export class MyProfilePage {
 
     public posts = [];
     public users = [];
+    public unreadNotifications = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -30,18 +31,48 @@ export class MyProfilePage {
   ionViewDidLoad() {
       console.log('ionViewDidLoad MyProfilePage');
       this.getUserPosts();
+      this.getUnreadCount();
   }
 
   Refresh(refresher) {
       console.log('Begin async operation');
       this.posts = [];
       this.users = [];
+      this.unreadNotifications = [];
+
       this.getUserPosts();
+      this.getUnreadCount();
 
       setTimeout(() => {
           console.log('Async operation has ended');
           refresher.complete();
       }, 2000);
+  }
+
+  goToNotificationsPage() {
+      this.navCtrl.push(NotificationsPage);
+  }
+
+  getUnreadCount() {
+
+      let myId = firebase.auth().currentUser.uid;
+      let unreadClone = this.unreadNotifications;
+
+      let ref = firebase.database().ref("Notifications");
+      ref.orderByChild("read").equalTo(false).once("value")
+          .then(function (snapshot) {
+              snapshot.forEach(function (childSnapshot) {
+                  //console.log("CHILDSNAP : " + childSnapshot.val().firstName);
+
+
+                  console.log("UNREAD: " + childSnapshot.val().recieveId);
+                  if (childSnapshot.val().recieveId === myId) {
+                      unreadClone.push(1);
+                  }
+
+              })
+
+          })
   }
 
   viewPost(userId, postId) {
@@ -141,7 +172,7 @@ export class MyProfilePage {
 
                       let name = firstName + " " + lastName;
 
-                      postsClone.push({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "postId": userPostKeys[i], "userId": userId });
+                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "postId": userPostKeys[i], "userId": userId });
                   });
 
               }

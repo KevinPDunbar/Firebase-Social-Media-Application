@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import firebase from 'firebase';
 import { AlertController } from 'ionic-angular';
+import { NotificationsPage } from '../notifications/notifications';
 
 /**
  * Generated class for the ViewPostPage page.
@@ -19,6 +20,7 @@ export class ViewPostPage {
     public users = [];
     public posts = [];
     public comments = [];
+    public unreadNotifications = [];
 
     public passedUserId;
     public passedPostId;
@@ -36,6 +38,7 @@ export class ViewPostPage {
       this.getPost();
       //this.addComment();
       this.getComments();
+      this.getUnreadCount();
   }
 
   Refresh(refresher) {
@@ -43,9 +46,11 @@ export class ViewPostPage {
       this.posts = [];
       this.users = [];
       this.comments = [];
+      this.unreadNotifications = [];
 
       this.getPost();
       this.getComments();
+      this.getUnreadCount();
 
       setTimeout(() => {
           console.log('Async operation has ended');
@@ -87,19 +92,42 @@ export class ViewPostPage {
 
   }
 
+  goToNotificationsPage() {
+      this.navCtrl.push(NotificationsPage);
+  }
+
+  getUnreadCount() {
+
+      let myId = firebase.auth().currentUser.uid;
+      let unreadClone = this.unreadNotifications;
+
+      let ref = firebase.database().ref("Notifications");
+      ref.orderByChild("read").equalTo(false).once("value")
+          .then(function (snapshot) {
+              snapshot.forEach(function (childSnapshot) {
+                  //console.log("CHILDSNAP : " + childSnapshot.val().firstName);
+
+
+                  console.log("UNREAD: " + childSnapshot.val().recieveId);
+                  if (childSnapshot.val().recieveId === myId) {
+                      unreadClone.push(1);
+                  }
+
+              })
+
+          })
+  }
+
 
   addComment(newCommentText)
   {
 
       let userId = this.passedUserId;
+      let myId = firebase.auth().currentUser.uid;
+
       let postId = this.passedPostId;
 
       let commentsClone = [];
-
-
-
-
-
 
       let commentUserId;
       let commentText;
@@ -107,7 +135,7 @@ export class ViewPostPage {
       let lastName;
 
 
-      let comment = { "userId": userId, "comment": newCommentText };
+      let comment = { "userId": myId, "comment": newCommentText };
 
       firebase.database().ref('Posts/' + userId + '/' + postId + '/comments/')
           .once("value")
@@ -125,6 +153,20 @@ export class ViewPostPage {
 
               commentsClone.push(comment);
               firebase.database().ref('Posts/' + userId + '/' + postId).child('comments').set(commentsClone);
+
+              let date = firebase.database.ServerValue.TIMESTAMP;
+              
+
+              firebase.database().ref('Notifications/').push({
+                  recieveId: userId,
+                  pusherId: myId,
+                  subject: "comment",
+                  read: false,
+                  commentOwnerId: userId,
+                  postId: postId,
+                  date: date
+
+              });
 
 
           });
@@ -218,15 +260,18 @@ export class ViewPostPage {
       let postId = this.passedPostId;
       let commentsClone = this.comments;
 
-      let firstName;
-      let lastName;
-      let commentText;
-      let commentUserId;
+      
 
       firebase.database().ref('Posts/' + userId + '/' + postId + '/comments/')
           .once("value")
           .then(function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
+
+                  let firstName;
+                  let lastName;
+                  let commentText;
+                  let commentUserId;
+                  let photoURL;
 
                   console.log("key: " + childSnapshot.key);
 
@@ -245,13 +290,14 @@ export class ViewPostPage {
 
                               firstName = (snapshot.val() && snapshot.val().firstName) || 'first name';
                               lastName = (snapshot.val() && snapshot.val().lastName) || 'last name';
+                              photoURL = (snapshot.val() && snapshot.val().profilePicture) || 'last name';
 
                               console.log("COMMENTER: " + firstName + lastName); 
 
-                              
+                              commentsClone.push({ "text": commentText, "firstName": firstName, "lastName": lastName, "userId": commentUserId, "photoURL": photoURL });
                           });
 
-                  commentsClone.push({ "text": commentText, "firstName": "firstName", "lastName": lastName, "userId": commentUserId });
+                  
                   console.log("COMMENT TO PUSH TEST: " + commentText + " fff " + firstName);
                   
 

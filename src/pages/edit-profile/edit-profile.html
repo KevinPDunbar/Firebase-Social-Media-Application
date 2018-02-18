@@ -6,9 +6,11 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title></ion-title>
-  </ion-navbar>
+    <ion-navbar ng-repeat="unreadNotification in unreadNotifications">
+        <ion-title></ion-title>
+        <span class="notificationIconNumber" *ngIf="unreadNotifications?.length > 0">{{unreadNotifications.length}}</span>
+         <ion-icon (click)="goToNotificationsPage()" class="notificationIcon" name="ios-notifications-outline"></ion-icon>
+    </ion-navbar>
 
 </ion-header>
 
@@ -19,7 +21,7 @@
         <button ion-fab>
             <ion-icon name="ios-camera-outline"></ion-icon>
         </button>
-        
+
     </ion-fab>
 
     <ion-refresher (ionRefresh)="Refresh($event)">
@@ -30,7 +32,7 @@
         </ion-refresher-content>
     </ion-refresher>
     <ion-card *ngFor="let user of users">
-        <img style="width: 100%; height: auto;" src={{user.photoURL}}/>
+        <img style="width: 100%; height: auto;" src={{user.photoURL}} />
 
         <h1>{{user.firstName}} {{user.lastName}}</h1>
 
@@ -42,17 +44,17 @@
 
                     <ion-item>
                         <ion-label stacked>First Name</ion-label>
-                        <ion-input id="firstNameInput" #firstName formControlName="firstName" type="text" >"{{user.firstName}}"</ion-input>
+                        <ion-input id="firstNameInput" #firstName formControlName="firstName" value="{{user.firstName}}" type="text"></ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-label stacked>Last Name</ion-label>
-                        <ion-input #lastName formControlName="lastName" type="text" >"{{user.lastName}}"</ion-input>
+                        <ion-input #lastName formControlName="lastName" value="{{user.lastName}}" type="text"></ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-label stacked>About Me</ion-label>
-                        <ion-textarea  #aboutMe formControlName="aboutMe" value="{{user.aboutMe}}" type="text"></ion-textarea>
+                        <ion-textarea #aboutMe formControlName="aboutMe" value="{{user.aboutMe}}" type="text"></ion-textarea>
                     </ion-item>
 
 
@@ -65,11 +67,11 @@
             </div>
 
         </form>
- 
-  
+
+
     </ion-card>
 
 
-    
+
 
 </ion-content>

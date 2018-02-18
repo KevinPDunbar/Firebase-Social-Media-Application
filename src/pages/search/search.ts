@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import { AuthData } from '../../providers/auth-data';
 
 import { ViewProfilePage } from '../view-profile/view-profile';
+import { NotificationsPage } from '../notifications/notifications';
 import { MyProfilePage } from '../my-profile/my-profile';
 
 
@@ -15,12 +16,42 @@ import { MyProfilePage } from '../my-profile/my-profile';
 export class SearchPage {
 
     public users = [];
+    public unreadNotifications = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchPage');
+      console.log('ionViewDidLoad SearchPage');
+      this.getUnreadCount();
+  }
+
+
+
+  goToNotificationsPage() {
+      this.navCtrl.push(NotificationsPage);
+  }
+
+  getUnreadCount() {
+
+      let myId = firebase.auth().currentUser.uid;
+      let unreadClone = this.unreadNotifications;
+
+      let ref = firebase.database().ref("Notifications");
+      ref.orderByChild("read").equalTo(false).once("value")
+          .then(function (snapshot) {
+              snapshot.forEach(function (childSnapshot) {
+                  //console.log("CHILDSNAP : " + childSnapshot.val().firstName);
+
+
+                  console.log("UNREAD: " + childSnapshot.val().recieveId);
+                  if (childSnapshot.val().recieveId === myId) {
+                      unreadClone.push(1);
+                  }
+
+              })
+
+          })
   }
 
     search($event) {

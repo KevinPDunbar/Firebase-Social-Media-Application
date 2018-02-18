@@ -6,9 +6,11 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title></ion-title>
-  </ion-navbar>
+    <ion-navbar ng-repeat="unreadNotification in unreadNotifications">
+        <ion-title></ion-title>
+        <span class="notificationIconNumber" *ngIf="unreadNotifications?.length > 0">{{unreadNotifications.length}}</span>
+        <ion-icon (click)="goToNotificationsPage()" class="notificationIcon" name="ios-notifications-outline"></ion-icon>
+    </ion-navbar>
 
 </ion-header>
 

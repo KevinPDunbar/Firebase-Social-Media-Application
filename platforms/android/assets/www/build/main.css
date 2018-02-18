@@ -1,3 +1,14 @@
+.notificationIcon {
+  color: white;
+  float: right;
+  font-size: 40px;
+}
+
+.notificationIconNumber {
+  color: red;
+  float: right;
+}
+
 .whiteBackground {
   background-color: white !important;
 }

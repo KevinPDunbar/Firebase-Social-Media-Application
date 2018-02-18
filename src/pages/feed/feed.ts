@@ -10,6 +10,7 @@ import { ViewProfilePage } from '../view-profile/view-profile';
 import { MyProfilePage } from '../my-profile/my-profile';
 import { ViewPostPage } from '../view-post/view-post';
 import { SearchPage } from '../search/search';
+import { NotificationsPage } from '../notifications/notifications';
 
 /**
  * Generated class for the FeedPage page.
@@ -24,6 +25,9 @@ import { SearchPage } from '../search/search';
 })
 
 export class FeedPage {
+
+    public unreadNotifications = [];
+
     public items = [];
 
     public users = [];
@@ -38,6 +42,7 @@ export class FeedPage {
 
         console.log('ionViewDidLoad FeedPage');
         this.getFollowing();
+        this.getUnreadCount();
 
     }
 
@@ -45,7 +50,9 @@ export class FeedPage {
         console.log('Begin async operation');
         this.items = [];
         this.users = [];
+        this.unreadNotifications = [];
         this.getFollowing();
+        this.getUnreadCount();
 
         console.log("REFRESHER: " + refresher);
 
@@ -58,6 +65,33 @@ export class FeedPage {
     getId(i) {
         console.log("GET ID");
         console.log(i);
+    }
+
+    goToNotificationsPage() {
+        this.navCtrl.push(NotificationsPage);
+    }
+
+    getUnreadCount() {
+
+        let myId = firebase.auth().currentUser.uid;
+        let unreadClone = this.unreadNotifications;
+
+        let ref = firebase.database().ref("Notifications");
+        ref.orderByChild("read").equalTo(false).once("value")
+            .then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    //console.log("CHILDSNAP : " + childSnapshot.val().firstName);
+
+
+                    console.log("UNREAD: " + childSnapshot.val().recieveId);
+                    if (childSnapshot.val().recieveId === myId)
+                    {
+                        unreadClone.push(1);
+                    }
+
+                })
+
+            })
     }
 
     viewMyProfile()

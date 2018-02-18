@@ -5,6 +5,7 @@ import { AuthData } from '../../providers/auth-data';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
+import { NotificationsPage } from '../notifications/notifications';
 /**
  * Generated class for the EditProfilePage page.
  *
@@ -19,6 +20,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 export class EditProfilePage {
 
     public users = [];
+    public unreadNotifications = [];
     public editProfileForm;
     loading: any;
 
@@ -35,6 +37,7 @@ export class EditProfilePage {
   ionViewDidLoad() {
       console.log('ionViewDidLoad EditProfilePage');
       this.getMyProfile();
+      this.getUnreadCount();
   }
 
   Refresh(refresher) {
@@ -48,15 +51,30 @@ export class EditProfilePage {
       }, 2000);
   }
 
-  Refreshh() {
-      console.log('Begin async operation');
-      this.users = [];
-      this.getMyProfile();
+  goToNotificationsPage() {
+      this.navCtrl.push(NotificationsPage);
+  }
 
-      setTimeout(() => {
-          console.log('Async operation has ended');
-          //refresher.complete();
-      }, 2000);
+  getUnreadCount() {
+
+      let myId = firebase.auth().currentUser.uid;
+      let unreadClone = this.unreadNotifications;
+
+      let ref = firebase.database().ref("Notifications");
+      ref.orderByChild("read").equalTo(false).once("value")
+          .then(function (snapshot) {
+              snapshot.forEach(function (childSnapshot) {
+                  //console.log("CHILDSNAP : " + childSnapshot.val().firstName);
+
+
+                  console.log("UNREAD: " + childSnapshot.val().recieveId);
+                  if (childSnapshot.val().recieveId === myId) {
+                      unreadClone.push(1);
+                  }
+
+              })
+
+          })
   }
 
   async takeProfilePicture()
@@ -120,14 +138,15 @@ export class EditProfilePage {
 
 
       let userQuery = firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
-          firstName = (snapshot.val() && snapshot.val().firstName) || 'first name';
-          lastName = (snapshot.val() && snapshot.val().lastName) || 'last name';
-          photoUrl = (snapshot.val() && snapshot.val().profilePicture) || 'last name';
-          aboutMe = (snapshot.val() && snapshot.val().aboutMe) || 'last name';
-          
+          firstName =snapshot.val().firstName;
+          lastName = snapshot.val().lastName;
+          photoUrl = snapshot.val().profilePicture;
+          aboutMe = snapshot.val().aboutMe;
+
+   
 
 
-          userClone.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoUrl });
+          userClone.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoUrl, "aboutMe": aboutMe });
 
 
       });
@@ -139,9 +158,11 @@ export class EditProfilePage {
 
       let userId = firebase.auth().currentUser.uid;
 
-      let firstName = this.editProfileForm.value.firstName;
-      let lastName = this.editProfileForm.value.lastName;
-      let aboutMe = this.editProfileForm.value.aboutMe;
+      let firstName = this.editProfileForm.value.firstName || this.users[0].firstName;
+      let lastName = this.editProfileForm.value.lastName || this.users[0].lastName;
+      let aboutMe = this.editProfileForm.value.aboutMe || this.users[0].aboutMe;
+
+     
 
       console.log("First Name :" + firstName + " Last Name :" + lastName + " About Me: " + aboutMe);
 
@@ -155,8 +176,8 @@ export class EditProfilePage {
           firebase.database().ref('/userProfile/' + userId).child('aboutMe').set(aboutMe);
           
    
-      });
-      this.Refreshh();
+      }); 
+     
     
 
       

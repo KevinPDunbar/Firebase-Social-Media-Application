@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import firebase from 'firebase';
 import { AuthData } from '../../providers/auth-data';
 import { ViewPostPage } from '../view-post/view-post';
+import { NotificationsPage } from '../notifications/notifications';
 
 /**
  * Generated class for the ViewProfilePage page.
@@ -22,6 +23,7 @@ export class ViewProfilePage {
     public users = [];
 
     public follows = [];
+    public unreadNotifications = [];
 
     
 
@@ -40,7 +42,7 @@ export class ViewProfilePage {
       console.log('ionViewDidLoad ViewProfilePage');
       this.getUserPosts();
       this.amIFollowing();
-      //this.follows.push({ "following": false });
+      this.getUnreadCount();
 
   }
 
@@ -49,14 +51,43 @@ export class ViewProfilePage {
       console.log('Begin async operation');
       this.posts = [];
       this.users = [];
+      this.unreadNotifications = [];
       this.getUserPosts();
       this.amIFollowing();
+      this.getUnreadCount();
 
       setTimeout(() => {
           console.log('Async operation has ended');
           refresher.complete();
       }, 2000);
   }
+
+  goToNotificationsPage() {
+      this.navCtrl.push(NotificationsPage);
+  }
+
+  getUnreadCount() {
+
+      let myId = firebase.auth().currentUser.uid;
+      let unreadClone = this.unreadNotifications;
+
+      let ref = firebase.database().ref("Notifications");
+      ref.orderByChild("read").equalTo(false).once("value")
+          .then(function (snapshot) {
+              snapshot.forEach(function (childSnapshot) {
+                  //console.log("CHILDSNAP : " + childSnapshot.val().firstName);
+
+
+                  console.log("UNREAD: " + childSnapshot.val().recieveId);
+                  if (childSnapshot.val().recieveId === myId) {
+                      unreadClone.push(1);
+                  }
+
+              })
+
+          })
+  }
+
 
   viewPost(userId, postId) {
       console.log("THE PASSED IN ID :" + userId);
@@ -151,7 +182,7 @@ export class ViewProfilePage {
                       let name = firstName + " " + lastName;
                       
 
-                      postsClone.push({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "userId": userId, "postId": userPostKeys[i] });
+                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "userId": userId, "postId": userPostKeys[i] });
                   });
           
               }
@@ -307,6 +338,19 @@ export class ViewProfilePage {
           console.log("Following AFTER" + following);
 
           firebase.database().ref('/userProfile/' + userId).child('following').set(following);
+
+          let date = firebase.database.ServerValue.TIMESTAMP;
+
+          firebase.database().ref('Notifications/').push({
+              recieveId: idToFollow,
+              pusherId: userId,
+              subject: "follow",
+              read: false,
+              commentOwnerId: "",
+              postId: "",
+              date: date
+
+          });
           
       });
 
