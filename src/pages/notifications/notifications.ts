@@ -74,10 +74,13 @@ export class NotificationsPage {
       let pusherPhotoURL;
       let commentOwnerId;
       let postId;
+      let date;
 
       let ref = firebase.database().ref("Notifications");
-      ref.orderByChild("date").once("value")
+      ref.once("value")
           .then(function (snapshot) {
+
+              
               snapshot.forEach(function (childSnapshot) {
                  
                   console.log("CHILDSNAP : " + childSnapshot.val().recieveId);
@@ -94,6 +97,7 @@ export class NotificationsPage {
                       subject = childSnapshot.val().subject;
                       commentOwnerId = childSnapshot.val().commentOwnerId;
                       postId = childSnapshot.val().postId;
+                      date = childSnapshot.val().date;
 
                       console.log("read: " + read);
 
@@ -101,7 +105,15 @@ export class NotificationsPage {
                           pusherName = (snapshot.val() && snapshot.val().firstName) + " " + (snapshot.val() && snapshot.val().lastName);
                           pusherPhotoURL = snapshot.val().profilePicture;
 
-                          notificationsClone.push({ "pusherName": pusherName, "pusherPhotoURL": pusherPhotoURL, "read": childSnapshot.val().read, "subject": childSnapshot.val().subject, "commentOwnerId": childSnapshot.val().commentOwnerId, "postId": childSnapshot.val().postId, "pusherId": childSnapshot.val().pusherId, "notificationId": childSnapshot.key });
+                          notificationsClone.push({ "pusherName": pusherName, "pusherPhotoURL": pusherPhotoURL, "read": childSnapshot.val().read, "subject": childSnapshot.val().subject, "commentOwnerId": childSnapshot.val().commentOwnerId, "postId": childSnapshot.val().postId, "pusherId": childSnapshot.val().pusherId, "notificationId": childSnapshot.key, "date": childSnapshot.val().date });
+
+                          for (let i = 0; i < notificationsClone.length; i++) {
+                              notificationsClone.sort(function (a, b) {
+                                  return -(a.date - b.date);
+                              });
+                          }
+
+                          
                       })
 
                       
@@ -111,7 +123,11 @@ export class NotificationsPage {
 
               })
 
+             
+
           })
+
+      
   }
 
 }

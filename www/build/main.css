@@ -1,3 +1,7 @@
+.notificationRead {
+  opacity: 0.5;
+}
+
 .notificationIcon {
   color: white;
   float: right;

@@ -23,8 +23,8 @@
         </ion-refresher-content>
     </ion-refresher>
 
-    <ion-card  margin-top class="whiteBackground" *ngFor="let notification of notifications" >
-        <section *ngIf="notification.subject === 'comment'">
+    <ion-card   margin-top class="whiteBackground" *ngFor="let notification of notifications" >
+        <section [ngClass]="notification.read === true ? 'notificationRead': ''" *ngIf="notification.subject === 'comment'">
             <section (click)="viewPost(notification.commentOwnerId, notification.postId, notification.notificationId)">
 
                 <ion-item class="whiteBackground">
@@ -42,7 +42,8 @@
             </section>
         </section>
 
-        <section *ngIf="notification.subject === 'follow'">
+        <section [ngClass]="notification.read === true ? 'notificationRead': ''" *ngIf="notification.subject === 'follow'">
+
             <section (click)="viewProfile(notification.pusherId, notification.notificationId)">
 
                 <ion-item class="whiteBackground">

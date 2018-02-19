@@ -263,9 +263,15 @@ export class FeedPage {
                                         
 
                                         console.log("NAME TEST: " + name);
-                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": date, "postPhotoURL": postPhotoURL });
-                                        
+                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": date, "postPhotoURL": postPhotoURL, "timestamp": timeStamp });
 
+                                        for (let i = 0; i < bbb.length; i++)
+                                        {
+                                            bbb.sort(function (a, b) {
+                                                return -(a.timestamp - b.timestamp);
+                                            });
+                                        }
+                                        
                                     })
 
                                     

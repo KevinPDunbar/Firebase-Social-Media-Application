@@ -339,7 +339,6 @@ export class ViewProfilePage {
 
           firebase.database().ref('/userProfile/' + userId).child('following').set(following);
 
-          let date = firebase.database.ServerValue.TIMESTAMP;
 
           firebase.database().ref('Notifications/').push({
               recieveId: idToFollow,
@@ -348,7 +347,7 @@ export class ViewProfilePage {
               read: false,
               commentOwnerId: "",
               postId: "",
-              date: date
+              date: firebase.database.ServerValue.TIMESTAMP
 
           });
           

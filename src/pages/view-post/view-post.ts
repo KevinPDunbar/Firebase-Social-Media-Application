@@ -154,7 +154,7 @@ export class ViewPostPage {
               commentsClone.push(comment);
               firebase.database().ref('Posts/' + userId + '/' + postId).child('comments').set(commentsClone);
 
-              let date = firebase.database.ServerValue.TIMESTAMP;
+             
               
 
               firebase.database().ref('Notifications/').push({
@@ -164,7 +164,7 @@ export class ViewPostPage {
                   read: false,
                   commentOwnerId: userId,
                   postId: postId,
-                  date: date
+                  date: firebase.database.ServerValue.TIMESTAMP
 
               });
 
