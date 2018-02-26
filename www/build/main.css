@@ -1,3 +1,15 @@
+.likedPost {
+  color: red !important;
+  background-color: white !important;
+  box-shadow: none !important;
+}
+
+.notLikedPost {
+  color: grey !important;
+  background-color: white !important;
+  box-shadow: none !important;
+}
+
 .notificationRead {
   opacity: 0.5;
 }

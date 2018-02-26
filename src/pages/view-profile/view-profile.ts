@@ -164,6 +164,16 @@ export class ViewProfilePage {
                       let score = (snapshot.val() && snapshot.val().Score);
                       let timeStamp = (snapshot.val() && snapshot.val().Date);
                       let postPhotoURL = snapshot.val().photoURL;
+                      let likes = snapshot.val().likes || [];
+                      let haveIliked = false;
+                      let myId = firebase.auth().currentUser.uid;
+
+
+                      for (let i = 0; i < likes.length; i++) {
+                          if (likes[i] === myId) {
+                              haveIliked = true;
+                          }
+                      }
 
                       let wholeDate = new Date(timeStamp);
 
@@ -182,7 +192,7 @@ export class ViewProfilePage {
                       let name = firstName + " " + lastName;
                       
 
-                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "userId": userId, "postId": userPostKeys[i] });
+                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "userId": userId, "postId": userPostKeys[i], "likes": likes, "haveILiked": haveIliked });
                   });
           
               }
@@ -354,8 +364,87 @@ export class ViewProfilePage {
       });
 
       
+  }
 
-      
+  likePost(post, userId, postId) {
+
+      let ownerId = userId;
+      let myId = firebase.auth().currentUser.uid;
+      let score;
+      let likes = [];
+
+      console.log("post: " + post.postId);
+      for (let i = 0; i < this.posts.length; i++)
+          if (this.posts[i].postId === postId) {
+              console.log("POST FOUND and liked");
+              this.posts[i].haveILiked = true;
+              this.posts[i].score++;
+              break;
+          }
+
+
+      let Query = firebase.database().ref('/Posts/' + userId + '/' + postId).once('value').then(function (snapshot) {
+          likes = (snapshot.val() && snapshot.val().likes) || [];
+          score = (snapshot.val() && snapshot.val().Score);
+          likes.push(myId);
+          score = score + 1;
+
+          firebase.database().ref('/Posts/' + userId + '/' + postId).child('likes').set(likes);
+          firebase.database().ref('/Posts/' + userId + '/' + postId).child('Score').set(score);
+
+          firebase.database().ref('Notifications/').push({
+              recieveId: ownerId,
+              pusherId: myId,
+              subject: "like",
+              read: false,
+              commentOwnerId: ownerId,
+              postId: postId,
+              date: firebase.database.ServerValue.TIMESTAMP
+
+          });
+
+      });
+
+
+  }
+
+  unlikePost(post, userId, postId) {
+
+      let ownerId = userId;
+      let myId = firebase.auth().currentUser.uid;
+      let score;
+      let likes = [];
+      let updatedLikes = [];
+
+      console.log("post: " + post.postId);
+      for (let i = 0; i < this.posts.length; i++)
+          if (this.posts[i].postId === postId) {
+              console.log("POST FOUND and unliked");
+              this.posts[i].haveILiked = false;
+              this.posts[i].score--;
+              break;
+          }
+
+      let Query = firebase.database().ref('/Posts/' + userId + '/' + postId).once('value').then(function (snapshot) {
+          likes = (snapshot.val() && snapshot.val().likes) || [];
+          score = (snapshot.val() && snapshot.val().Score);
+          likes.push(myId);
+
+
+          for (let i = 0; i < likes.length; i++) {
+              if (likes[i] != myId) {
+                  updatedLikes.push(likes[i]);
+              }
+          }
+
+          score = score - 1;
+
+          firebase.database().ref('/Posts/' + userId + '/' + postId).child('likes').set(updatedLikes);
+          firebase.database().ref('/Posts/' + userId + '/' + postId).child('Score').set(score);
+
+      });
+
+
   }
 
 }

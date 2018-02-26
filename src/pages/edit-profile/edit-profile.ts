@@ -6,6 +6,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { NotificationsPage } from '../notifications/notifications';
+import { Login } from '../login/login';
 /**
  * Generated class for the EditProfilePage page.
  *
@@ -24,7 +25,7 @@ export class EditProfilePage {
     public editProfileForm;
     loading: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, private camera: Camera) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, private camera: Camera, public authData: AuthData) {
 
         this.editProfileForm = formBuilder.group({
             firstName: ['', Validators.compose([Validators.required])],
@@ -181,6 +182,12 @@ export class EditProfilePage {
     
 
       
+  }
+
+  logOut() {
+      this.authData.logoutUser().then(() => {
+          this.navCtrl.setRoot(Login);
+      });
   }
 
 }

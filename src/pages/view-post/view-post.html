@@ -15,7 +15,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding-top>
 
     <ion-refresher (ionRefresh)="Refresh($event)">
         <ion-refresher-content pullingIcon="arrow-dropdown"
@@ -25,9 +25,9 @@
         </ion-refresher-content>
     </ion-refresher>
 
-    <ion-card *ngFor="let user of users">
+    <ion-card margin-top class="whiteBackground" *ngFor="let user of users">
 
-        <ion-item>
+        <ion-item class="whiteBackground">
             <ion-avatar item-left>
                 <img src="{{user.photoURL}}" />
             </ion-avatar>
@@ -38,13 +38,22 @@
         <ion-card-content>
             <p>{{user.text}}</p>
             <img src={{user.postPhotoURL}} *ngIf="user.postPhotoURL">
+
+            <button *ngIf="user.haveILiked === true" [ngClass]="user.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(user, user.userId, user.postId)" ion-button icon-only>
+                <ion-icon name="heart"></ion-icon>
+                <p>{{user.score}}</p>
+            </button>
+
+            <button *ngIf="user.haveILiked === false" [ngClass]="user.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(user, user.userId, user.postId)" ion-button icon-only>
+                <ion-icon name="heart"></ion-icon>
+                <p>{{user.score}}</p>
+            </button>
         </ion-card-content>
     </ion-card>
 
+    <ion-card margin-left margin-right class="whiteBackground"  *ngFor="let comment of comments">
 
-    <ion-card *ngFor="let comment of comments">
-
-    <ion-item>
+    <ion-item class="whiteBackground">
         <ion-avatar item-left>
             <img src={{comment.photoURL}} />
         </ion-avatar>

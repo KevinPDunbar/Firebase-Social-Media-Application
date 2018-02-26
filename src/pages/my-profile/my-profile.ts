@@ -155,6 +155,16 @@ export class MyProfilePage {
                       let score = (snapshot.val() && snapshot.val().Score);
                       let timeStamp = (snapshot.val() && snapshot.val().Date) || 'There is no date';
                       let postPhotoURL = snapshot.val().photoURL;
+                      let likes = snapshot.val().likes || [];
+                      let haveILiked = false;
+                      let myId = firebase.auth().currentUser.uid;
+                      let postId = userPostKeys[i];
+
+                      for (let i = 0; i < likes.length; i++) {
+                          if (likes[i] === myId) {
+                              haveILiked = true;
+                          }
+                      }
 
                       let wholeDate = new Date(timeStamp);
 
@@ -172,7 +182,7 @@ export class MyProfilePage {
 
                       let name = firstName + " " + lastName;
 
-                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "postId": userPostKeys[i], "userId": userId });
+                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "postId": userPostKeys[i], "userId": userId, "likes": likes, "haveILiked": haveILiked });
                   });
 
               }
@@ -203,6 +213,85 @@ export class MyProfilePage {
       postRef.child(post.postId).remove().then(function () {
           
       });
+
+  }
+
+  likePost(post, userId, postId) {
+
+      let ownerId = firebase.auth().currentUser.uid;;
+      let myId = firebase.auth().currentUser.uid;
+      let score;
+      let likes = [];
+
+      for (let i = 0; i < this.posts.length; i++)
+          if (this.posts[i].postId === postId) {
+              console.log("POST FOUND and liked");
+              this.posts[i].haveILiked = true;
+              this.posts[i].score++;
+              break;
+          }
+
+
+      let Query = firebase.database().ref('/Posts/' + ownerId + '/' + postId).once('value').then(function (snapshot) {
+          likes = (snapshot.val() && snapshot.val().likes) || [];
+          score = (snapshot.val() && snapshot.val().Score);
+          likes.push(myId);
+          score = score + 1;
+
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('likes').set(likes);
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('Score').set(score);
+
+          firebase.database().ref('Notifications/').push({
+              recieveId: ownerId,
+              pusherId: myId,
+              subject: "like",
+              read: false,
+              commentOwnerId: ownerId,
+              postId: postId,
+              date: firebase.database.ServerValue.TIMESTAMP
+
+          });
+
+      });
+
+
+  }
+
+  unlikePost(post, userId, postId) {
+
+      let ownerId = firebase.auth().currentUser.uid;
+      let myId = firebase.auth().currentUser.uid;
+      let score;
+      let likes = [];
+      let updatedLikes = [];
+
+      for (let i = 0; i < this.posts.length; i++)
+          if (this.posts[i].postId === postId) {
+              console.log("POST FOUND and unliked");
+              this.posts[i].haveILiked = false;
+              this.posts[i].score--;
+              break;
+          }
+
+      let Query = firebase.database().ref('/Posts/' + ownerId + '/' + postId).once('value').then(function (snapshot) {
+          likes = (snapshot.val() && snapshot.val().likes) || [];
+          score = (snapshot.val() && snapshot.val().Score);
+          likes.push(myId);
+
+
+          for (let i = 0; i < likes.length; i++) {
+              if (likes[i] != myId) {
+                  updatedLikes.push(likes[i]);
+              }
+          }
+
+          score = score - 1;
+
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('likes').set(updatedLikes);
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('Score').set(score);
+
+      });
+
 
   }
 

@@ -68,7 +68,16 @@
                     <p>{{post.text}}</p>
                     <img src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
 
-                    <ion-badge item-end>{{post.score}}</ion-badge>
+                    <button *ngIf="post.haveILiked === true" [ngClass]="post.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(post, post.userId, post.postId)" ion-button icon-only>
+                        <ion-icon name="heart"></ion-icon>
+                        <p>{{post.score}}</p>
+                    </button>
+
+                    <button *ngIf="post.haveILiked === false" [ngClass]="post.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(post, post.userId, post.postId)" ion-button icon-only>
+                        <ion-icon name="heart"></ion-icon>
+                        <p>{{post.score}}</p>
+                    </button>
+
                     <ion-badge style="float: right;" (click)="viewPost(post.userId, post.postId)" item-end>View Replies</ion-badge>
                 </ion-card-content>
 

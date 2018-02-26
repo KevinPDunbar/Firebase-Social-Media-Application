@@ -181,6 +181,7 @@ export class FeedPage {
     getFollowing() {
         let user = firebase.auth().currentUser;
         let userId = user.uid;
+        let myId = firebase.auth().currentUser.uid;
 
         let following = [];
         let followingPostKey = [];
@@ -243,6 +244,28 @@ export class FeedPage {
                                     let postId = childSnapshot.key;
                                     let timeStamp = (snapshot.val() && snapshot.val().Date) || 'There is no date';
                                     let postPhotoURL = snapshot.val().photoURL;
+                                    let likes = snapshot.val().likes || [];
+                                    let haveIliked = false;
+
+                                    for (let i = 0; i < likes.length; i++)
+                                    {
+                                        if (likes[i] === myId)
+                                        {
+                                            haveIliked = true;
+                                        }
+                                    }
+                                   
+                                    let comments = (snapshot.val() && snapshot.val().comments) || [];
+                                    let commentLength;
+                                    if (comments.length > 0)
+                                    {
+                                        commentLength = comments.length;
+                                    }
+                                    else
+                                    {
+                                        commentLength = 0;
+                                    }
+                                    console.log("Comment Length: " + commentLength);
 
                                     let wholeDate = new Date(timeStamp);
 
@@ -263,7 +286,7 @@ export class FeedPage {
                                         
 
                                         console.log("NAME TEST: " + name);
-                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": date, "postPhotoURL": postPhotoURL, "timestamp": timeStamp });
+                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": date, "postPhotoURL": postPhotoURL, "timestamp": timeStamp, "commentLength": commentLength, "haveILiked": haveIliked });
 
                                         for (let i = 0; i < bbb.length; i++)
                                         {
@@ -497,6 +520,91 @@ export class FeedPage {
     goToSearch()
     {
         this.navCtrl.push(SearchPage);
+    }
+
+    
+
+    likePost(post, userId, postId) {
+
+        let ownerId = userId;
+        let myId = firebase.auth().currentUser.uid;
+        let score;
+        let likes = [];
+
+        console.log("post: " + post.postId);
+        for (let i = 0; i < this.items.length; i++)
+            if (this.items[i].postId === postId) {
+                console.log("POST FOUND and liked");
+                this.items[i].haveILiked = true;
+                this.items[i].score++;
+                break;
+            }
+
+
+        let Query = firebase.database().ref('/Posts/' + userId + '/' + postId).once('value').then(function (snapshot) {
+            likes = (snapshot.val() && snapshot.val().likes) || [];
+            score = (snapshot.val() && snapshot.val().Score);
+            likes.push(myId);
+            score = score + 1;
+
+            firebase.database().ref('/Posts/' + userId + '/' + postId).child('likes').set(likes);
+            firebase.database().ref('/Posts/' + userId + '/' + postId).child('Score').set(score);
+
+            firebase.database().ref('Notifications/').push({
+                recieveId: ownerId,
+                pusherId: myId,
+                subject: "like",
+                read: false,
+                commentOwnerId: ownerId,
+                postId: postId,
+                date: firebase.database.ServerValue.TIMESTAMP
+
+            });
+
+        });
+
+
+    }
+
+    unlikePost(post, userId, postId) {
+
+        let ownerId = userId;
+        let myId = firebase.auth().currentUser.uid;
+        let score;
+        let likes = [];
+        let updatedLikes = [];
+
+        console.log("post: " + post.postId);
+        for (let i = 0; i < this.items.length; i++)
+            if (this.items[i].postId === postId) {
+                console.log("POST FOUND and unliked");
+                this.items[i].haveILiked = false;
+                this.items[i].score--;
+                break;
+            }
+
+        let Query = firebase.database().ref('/Posts/' + userId + '/' + postId).once('value').then(function (snapshot) {
+            likes = (snapshot.val() && snapshot.val().likes) || [];
+            score = (snapshot.val() && snapshot.val().Score);
+            likes.push(myId);
+
+
+            for (let i = 0; i < likes.length; i++)
+            {
+                if (likes[i] != myId)
+                {
+                    updatedLikes.push(likes[i]);
+                }
+            }
+
+            score = score - 1;
+
+            firebase.database().ref('/Posts/' + userId + '/' + postId).child('likes').set(updatedLikes);
+            firebase.database().ref('/Posts/' + userId + '/' + postId).child('Score').set(score);
+
+        });
+
+
     }
 
 

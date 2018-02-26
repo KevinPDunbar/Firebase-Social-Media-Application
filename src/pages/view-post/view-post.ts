@@ -181,7 +181,7 @@ export class ViewPostPage {
   {
       let userId = this.passedUserId;
       let postId = this.passedPostId;
-
+      let myId = firebase.auth().currentUser.uid;
 
 
       let postsClone = this.posts;
@@ -193,13 +193,25 @@ export class ViewPostPage {
       let postTimestamp;
       let date;
       let comments;
-      let postPhotoURL;
+      let postPhotoURL; 
+      let score;
+      let likes = [];
+      let haveILiked;
 
       firebase.database().ref('Posts/' + userId + '/' + postId).once('value').then(function (snapshot) {
           postText = (snapshot.val() && snapshot.val().Text) || '';
           postScore = (snapshot.val() && snapshot.val().Score) || 'first name';
           postTimestamp = (snapshot.val() && snapshot.val().Date) || 'no date found';
           postPhotoURL = snapshot.val().photoURL;
+          score = snapshot.val().score;
+          likes = snapshot.val().likes || [];
+          haveILiked = false;
+
+          for (let i = 0; i < likes.length; i++) {
+              if (likes[i] === myId) {
+                  haveILiked = true;
+              }
+          }
 
           let wholeDate = new Date(postTimestamp);
 
@@ -224,7 +236,7 @@ export class ViewPostPage {
           photoURL = snapshot.val().profilePicture;
 
           console.log("First Name: " + firstName + " Last Name " + lastName);
-          userClone.push({ "userId": userId, "firstName": firstName, "lastName": lastName, "text": postText, "date": date, "score": postScore, "photoURL": photoURL, "postPhotoURL": postPhotoURL });
+          userClone.push({ "userId": userId, "firstName": firstName, "lastName": lastName, "text": postText, "date": date, "score": postScore, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "likes": likes, "haveILiked": haveILiked, "postId": postId });
       })
 
       
@@ -299,17 +311,92 @@ export class ViewPostPage {
 
                   
                   console.log("COMMENT TO PUSH TEST: " + commentText + " fff " + firstName);
-                  
-
-
-
-
-
-                  
+                             
 
               });
 
           });
+  }
+
+  likePost() {
+
+      let ownerId = this.passedUserId;
+      let postId = this.passedPostId;
+      let myId = firebase.auth().currentUser.uid;
+      let score;
+      let likes = [];
+
+      for (let i = 0; i < this.users.length; i++)
+          if (this.users[i].postId === postId) {
+              console.log("POST FOUND and liked");
+              this.users[i].haveILiked = true;
+              this.users[i].score++;
+              break;
+          }
+
+
+      let Query = firebase.database().ref('/Posts/' + ownerId + '/' + postId).once('value').then(function (snapshot) {
+          likes = (snapshot.val() && snapshot.val().likes) || [];
+          score = (snapshot.val() && snapshot.val().Score);
+          likes.push(myId);
+          score = score + 1;
+
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('likes').set(likes);
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('Score').set(score);
+
+          firebase.database().ref('Notifications/').push({
+              recieveId: ownerId,
+              pusherId: myId,
+              subject: "like",
+              read: false,
+              commentOwnerId: ownerId,
+              postId: postId,
+              date: firebase.database.ServerValue.TIMESTAMP
+
+          });
+
+      });
+
+
+  }
+
+  unlikePost() {
+
+      let ownerId = this.passedUserId;
+      let postId = this.passedPostId;
+      let myId = firebase.auth().currentUser.uid;
+      let score;
+      let likes = [];
+      let updatedLikes = [];
+
+      for (let i = 0; i < this.users.length; i++)
+          if (this.users[i].postId === postId) {
+              console.log("POST FOUND and unliked");
+              this.users[i].haveILiked = false;
+              this.users[i].score--;
+              break;
+          }
+
+      let Query = firebase.database().ref('/Posts/' + ownerId + '/' + postId).once('value').then(function (snapshot) {
+          likes = (snapshot.val() && snapshot.val().likes) || [];
+          score = (snapshot.val() && snapshot.val().Score);
+          likes.push(myId);
+
+
+          for (let i = 0; i < likes.length; i++) {
+              if (likes[i] != myId) {
+                  updatedLikes.push(likes[i]);
+              }
+          }
+
+          score = score - 1;
+
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('likes').set(updatedLikes);
+          firebase.database().ref('/Posts/' + ownerId + '/' + postId).child('Score').set(score);
+
+      });
+
+
   }
 
 }

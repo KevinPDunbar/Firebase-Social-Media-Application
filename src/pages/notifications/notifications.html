@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title></ion-title>
+    <ion-title>Notifications</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -39,6 +39,24 @@
                 </ion-card-content>
 
                
+            </section>
+        </section>
+
+        <section [ngClass]="notification.read === true ? 'notificationRead': ''" *ngIf="notification.subject === 'like'">
+            <section (click)="viewPost(notification.commentOwnerId, notification.postId, notification.notificationId)">
+
+                <ion-item class="whiteBackground">
+                    <ion-avatar item-left>
+                        <img src={{notification.pusherPhotoURL}} />
+                    </ion-avatar>
+                    <h2>{{notification.pusherName}}</h2>
+                </ion-item>
+
+                <ion-card-content>
+                    <p>{{notification.pusherName}} liked your post</p>
+                </ion-card-content>
+
+
             </section>
         </section>
 

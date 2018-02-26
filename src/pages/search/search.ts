@@ -62,7 +62,7 @@ export class SearchPage {
 
         let results = this.users;
 
-        let q = $event.target.value
+        let q = $event.target.value || '';
         console.log("Q IS: " + q);
 
         let userRef = firebase.database().ref('userProfile/')
