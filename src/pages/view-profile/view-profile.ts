@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ModalOptions } from 'ionic-angular';
 import firebase from 'firebase';
 import { AuthData } from '../../providers/auth-data';
 import { ViewPostPage } from '../view-post/view-post';
 import { NotificationsPage } from '../notifications/notifications';
+
 
 /**
  * Generated class for the ViewProfilePage page.
@@ -30,7 +31,7 @@ export class ViewProfilePage {
 
     public isFollowing = false;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController) {
 
         this.passedUserId = navParams.get("userId");
         console.log("PASSED USER ID : " + this.passedUserId);
@@ -65,6 +66,21 @@ export class ViewProfilePage {
   goToNotificationsPage() {
       this.navCtrl.push(NotificationsPage);
   }
+
+openModal(userId, postId) {
+
+    const options: ModalOptions = {
+        showBackdrop: true,
+        enableBackdropDismiss: true,
+        enterAnimation: 'modal-scale-up-enter',
+        leaveAnimation: 'modal-scale-up-leave',
+
+    }
+
+    const myModal = this.modal.create(ViewPostPage, { userId, postId }, options);
+
+    myModal.present();
+}
 
   getUnreadCount() {
 
@@ -165,8 +181,17 @@ export class ViewProfilePage {
                       let timeStamp = (snapshot.val() && snapshot.val().Date);
                       let postPhotoURL = snapshot.val().photoURL;
                       let likes = snapshot.val().likes || [];
+                      let comments = snapshot.val().comments || [];
                       let haveIliked = false;
                       let myId = firebase.auth().currentUser.uid;
+
+                      let commentLength;
+                      if (comments.length > 0) {
+                          commentLength = comments.length;
+                      }
+                      else {
+                          commentLength = 0;
+                      }
 
 
                       for (let i = 0; i < likes.length; i++) {
@@ -183,8 +208,32 @@ export class ViewProfilePage {
 
                       let date = day + "/" + month + "/" + year; 
 
-                      //hard coded for now
-                      let picture = "https://firebasestorage.googleapis.com/v0/b/login-2aa53.appspot.com/o/anon_user.gif?alt=media&token=723b0c9d-76a6-40ea-ba67-34e058447c0a";
+                      //
+                      let now = new Date().getTime()
+
+                      let diff = msToTime(now - timeStamp);
+
+                      console.log(diff.toString());
+
+                      function msToTime(s) {
+                          var ms = s % 1000;
+                          s = (s - ms) / 1000;
+                          var secs = s % 60;
+                          s = (s - secs) / 60;
+                          var mins = s % 60;
+                          var hrs = (s - mins) / 60;
+                          if (hrs == 0 && mins == 0)
+                              return 'just now';
+                          else if (hrs == 0)
+                              return mins + ' mins ago';
+                          else if (hrs < 24)
+                              return hrs + ' hours ago';
+                          else
+                              return Math.floor(hrs / 24) + ' days ago';
+                      }
+                                    //
+
+                      
 
                       console.log("Printing post " + i + " " + text);
                       //console.log(score);
@@ -192,7 +241,7 @@ export class ViewProfilePage {
                       let name = firstName + " " + lastName;
                       
 
-                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": date, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "userId": userId, "postId": userPostKeys[i], "likes": likes, "haveILiked": haveIliked });
+                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": diff, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "userId": userId, "postId": userPostKeys[i], "likes": likes, "haveILiked": haveIliked, "commentLength": commentLength });
                   });
           
               }
@@ -255,49 +304,7 @@ export class ViewProfilePage {
       });
   }
 
-  followButton() {
-      let idToFollow = this.passedUserId;
-      let userId = firebase.auth().currentUser.uid;
-
-      let amIFollowing = this.isFollowing;
-
-      let update = this.amIFollowing();
-
-      let follow = this.followUser();
-      let unFollow = this.unFollowUser();
-
-      let following = [];
-      let name;
-
-      firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
-
-          //name = (snapshot.val() && snapshot.val().firstName) || 'no following found';
-          following = (snapshot.val() && snapshot.val().following) || 'no following found';
-
-          for (let i = 0; i < following.length; i++) {
-              if (following[i] == idToFollow) {
-                  console.log("You are following this user already");
-                  amIFollowing = true;
-
-              }
-
-          }
-
-          if (amIFollowing === true) {
-              console.log("You are following this user already");
-              unFollow;
-              update;
-          }
-          else {
-              console.log("You are NOT following this user already");
-              follow;
-              update;
-          }
-
-
-      });
-      
-  }
+  
 
   unFollowUser()
   {
@@ -305,7 +312,8 @@ export class ViewProfilePage {
       let userId = firebase.auth().currentUser.uid;
 
       let following;
-      
+
+      this.follows[0].following = false;
 
       firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
 
@@ -334,7 +342,8 @@ export class ViewProfilePage {
 
       let following = [];
       let name;
-      
+
+      this.follows[0].following = true;
 
       firebase.database().ref('/userProfile/' + userId).once('value').then(function (snapshot) {
           
@@ -348,6 +357,7 @@ export class ViewProfilePage {
           console.log("Following AFTER" + following);
 
           firebase.database().ref('/userProfile/' + userId).child('following').set(following);
+
 
 
           firebase.database().ref('Notifications/').push({

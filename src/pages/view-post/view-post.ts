@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import firebase from 'firebase';
 import { AlertController } from 'ionic-angular';
 import { NotificationsPage } from '../notifications/notifications';
+
+import { ViewProfilePage } from '../view-profile/view-profile';
 
 /**
  * Generated class for the ViewPostPage page.
@@ -25,7 +27,7 @@ export class ViewPostPage {
     public passedUserId;
     public passedPostId;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, private view: ViewController) {
 
         this.passedUserId = navParams.get("userId");
         console.log("PASSED USER ID : " + this.passedUserId);
@@ -57,6 +59,16 @@ export class ViewPostPage {
           refresher.complete();
       }, 2000);
   }
+
+  closeModal() {
+      this.view.dismiss();
+  }
+
+    viewProfile(userId) {
+        this.navCtrl.push(ViewProfilePage, {
+            userId: userId
+        })
+    }
 
   showPrompt() {
       let prompt = this.alertCtrl.create({
@@ -128,14 +140,37 @@ export class ViewPostPage {
       let postId = this.passedPostId;
 
       let commentsClone = [];
+      let existingComments = this.comments;
 
       let commentUserId;
       let commentText;
       let firstName;
       let lastName;
 
+      for (let i = 0; i < this.users.length; i++)
+        {  
+            this.users[i].commentLength++;
+        }
 
       let comment = { "userId": myId, "comment": newCommentText };
+
+      //
+
+      firebase.database().ref('userProfile/' + myId)
+        .once("value")
+        .then(function (snapshot) {
+
+            let firstName = (snapshot.val() && snapshot.val().firstName) || 'first name';
+            let lastName = (snapshot.val() && snapshot.val().lastName) || 'last name';
+            let photoURL = (snapshot.val() && snapshot.val().profilePicture) || 'last name';
+
+            console.log("COMMENTER: " + firstName + lastName);
+
+            existingComments.unshift({ "text": newCommentText, "firstName": firstName, "lastName": lastName, "userId": commentUserId, "photoURL": photoURL });
+        });         
+      //
+
+      
 
       firebase.database().ref('Posts/' + userId + '/' + postId + '/comments/')
           .once("value")
@@ -192,11 +227,12 @@ export class ViewPostPage {
       let postScore;
       let postTimestamp;
       let date;
-      let comments;
       let postPhotoURL; 
       let score;
       let likes = [];
       let haveILiked;
+      let diff;
+      let commentLength;
 
       firebase.database().ref('Posts/' + userId + '/' + postId).once('value').then(function (snapshot) {
           postText = (snapshot.val() && snapshot.val().Text) || '';
@@ -205,6 +241,16 @@ export class ViewPostPage {
           postPhotoURL = snapshot.val().photoURL;
           score = snapshot.val().score;
           likes = snapshot.val().likes || [];
+
+          let comments = (snapshot.val() && snapshot.val().comments) || [];
+          commentLength;
+          if (comments.length > 0) {
+              commentLength = comments.length;
+          }
+          else {
+              commentLength = 0;
+          }
+          
           haveILiked = false;
 
           for (let i = 0; i < likes.length; i++) {
@@ -221,6 +267,31 @@ export class ViewPostPage {
 
           date = day + "/" + month + "/" + year; 
 
+          //
+          let now = new Date().getTime()
+
+          diff = msToTime(now - postTimestamp);
+          
+          console.log(diff.toString());
+
+          function msToTime(s) {
+              var ms = s % 1000;
+              s = (s - ms) / 1000;
+              var secs = s % 60;
+              s = (s - secs) / 60;
+              var mins = s % 60;
+              var hrs = (s - mins) / 60;
+              if (hrs == 0 && mins == 0)
+                  return 'just now';
+              else if (hrs == 0)
+                  return mins + ' mins ago';
+              else if (hrs < 24)
+                  return hrs + ' hours ago';
+              else
+                  return Math.floor(hrs / 24) + ' days ago';
+          }
+                                    //
+
           console.log("Post Text: " + postText + " Post Score " + postScore);
       })
 
@@ -236,7 +307,7 @@ export class ViewPostPage {
           photoURL = snapshot.val().profilePicture;
 
           console.log("First Name: " + firstName + " Last Name " + lastName);
-          userClone.push({ "userId": userId, "firstName": firstName, "lastName": lastName, "text": postText, "date": date, "score": postScore, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "likes": likes, "haveILiked": haveILiked, "postId": postId });
+          userClone.push({ "userId": userId, "firstName": firstName, "lastName": lastName, "text": postText, "date": diff, "score": postScore, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "likes": likes, "haveILiked": haveILiked, "postId": postId, "commentLength": commentLength });
       })
 
       

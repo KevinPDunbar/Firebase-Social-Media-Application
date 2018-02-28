@@ -65,8 +65,10 @@
                 </ion-item>
 
                 <ion-card-content>
-                    <p>{{post.text}}</p>
-                    <img src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
+                    <section (click)="openModal(post.userId, post.postId)">
+                        <p>{{post.text}}</p>
+                        <img src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
+                    </section>
 
                     <button *ngIf="post.haveILiked === true" [ngClass]="post.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(post, post.userId, post.postId)" ion-button icon-only>
                         <ion-icon name="heart"></ion-icon>
@@ -78,7 +80,10 @@
                         <p>{{post.score}}</p>
                     </button>
 
-                    <ion-badge style="float: right;" (click)="viewPost(post.userId, post.postId)" item-end>View Replies</ion-badge>
+                    <button class="commentIcon" (click)="openModal(post.userId, post.postId)" ion-button icon-only>
+                        <ion-icon class="commentIcon" name="md-text"></ion-icon>
+                        <p *ngIf="post.commentLength > 0">{{post.commentLength}}</p>
+                    </button>
                 </ion-card-content>
 
             </ion-card>

@@ -46,6 +46,15 @@ export class NotificationsPage {
 
       firebase.database().ref('/Notifications/' + notificationId).child('read').set(true);
 
+      for (let i = 0; i < this.notifications.length; i++)
+      {
+          if (this.notifications[i].notificationId === notificationId)
+          {
+              this.notifications[i].read = true;
+              break;
+          }
+      }
+
       this.navCtrl.push(ViewPostPage, {
           userId: commentOwnerId,
           postId: postId
@@ -55,6 +64,13 @@ export class NotificationsPage {
   viewProfile(pusherId, notificationId) {
       console.log("TPusher ID :" + pusherId);
       // this.navCtrl.push(ViewProfilePage);
+
+      for (let i = 0; i < this.notifications.length; i++) {
+          if (this.notifications[i].notificationId === notificationId) {
+              this.notifications[i].read = true;
+              break;
+          }
+      }
 
       firebase.database().ref('/Notifications/' + notificationId).child('read').set(true);
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthData } from '../../providers/auth-data';
 import { HomePage } from '../home/home';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ModalOptions } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -32,7 +32,7 @@ export class FeedPage {
 
     public users = [];
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public authData: AuthData, public alertCtrl: AlertController, private camera: Camera) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public authData: AuthData, public alertCtrl: AlertController, private camera: Camera, private modal: ModalController) {
 
  
     }
@@ -60,6 +60,21 @@ export class FeedPage {
             console.log('Async operation has ended');
             refresher.complete();
         }, 2000);
+    }
+
+    openModal(userId, postId) {
+
+        const options: ModalOptions = {
+            showBackdrop: true,
+            enableBackdropDismiss: true,
+            enterAnimation: 'modal-scale-up-enter',
+            leaveAnimation: 'modal-scale-up-leave',
+
+        }
+
+        const myModal = this.modal.create(ViewPostPage, { userId, postId }, options); 
+
+        myModal.present();
     }
 
     getId(i) {
@@ -269,6 +284,31 @@ export class FeedPage {
 
                                     let wholeDate = new Date(timeStamp);
 
+                                    //
+                                    let now = new Date().getTime()
+
+                                    let diff = msToTime(now - timeStamp);
+
+                                    console.log(diff.toString());
+
+                                    function msToTime(s) {
+                                        var ms = s % 1000;
+                                        s = (s - ms) / 1000;
+                                        var secs = s % 60;
+                                        s = (s - secs) / 60;
+                                        var mins = s % 60;
+                                        var hrs = (s - mins) / 60;
+                                        if (hrs == 0 && mins == 0)
+                                            return 'just now';
+                                        else if (hrs == 0)
+                                            return mins + ' mins ago';
+                                        else if (hrs < 24)
+                                            return hrs + ' hours ago';
+                                        else
+                                            return Math.floor(hrs / 24) + ' days ago';
+                                    }
+                                    //
+
                                     let month = wholeDate.getUTCMonth() + 1; //months from 1-12
                                     let day = wholeDate.getUTCDate();
                                     let year = wholeDate.getUTCFullYear();
@@ -286,7 +326,7 @@ export class FeedPage {
                                         
 
                                         console.log("NAME TEST: " + name);
-                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": date, "postPhotoURL": postPhotoURL, "timestamp": timeStamp, "commentLength": commentLength, "haveILiked": haveIliked });
+                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": diff, "postPhotoURL": postPhotoURL, "timestamp": timeStamp, "commentLength": commentLength, "haveILiked": haveIliked });
 
                                         for (let i = 0; i < bbb.length; i++)
                                         {

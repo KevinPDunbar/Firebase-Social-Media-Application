@@ -29,6 +29,12 @@ import { AuthData } from '../providers/auth-data';
 
 import { Camera } from '@ionic-native/camera';
 
+import { Config } from 'ionic-angular';
+import { ModalScaleUpEnterTransition } from '../scale-up-enter.transition';
+import { ModalScaleUpLeaveTransition } from '../scale-up-leave.transition';
+
+
+
 
 @NgModule({
   declarations: [
@@ -82,4 +88,13 @@ import { Camera } from '@ionic-native/camera';
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class AppModule {}
+export class AppModule {
+    constructor(public config: Config) {
+        this.setCustomTransitions();
+    }
+
+    private setCustomTransitions() {
+        this.config.setTransition('modal-scale-up-leave', ModalScaleUpLeaveTransition);
+        this.config.setTransition('modal-scale-up-enter', ModalScaleUpEnterTransition);
+    }
+}

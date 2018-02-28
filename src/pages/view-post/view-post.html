@@ -8,6 +8,7 @@
 
     <ion-navbar ng-repeat="unreadNotification in unreadNotifications">
         <ion-title></ion-title>
+        <button ion-button class="modalCloseButton" (click)="closeModal()">Close</button>
         <span class="notificationIconNumber" *ngIf="unreadNotifications?.length > 0">{{unreadNotifications.length}}</span>
         <ion-icon (click)="goToNotificationsPage()" class="notificationIcon" name="ios-notifications-outline"></ion-icon>
     </ion-navbar>
@@ -27,7 +28,7 @@
 
     <ion-card margin-top class="whiteBackground" *ngFor="let user of users">
 
-        <ion-item class="whiteBackground">
+        <ion-item class="whiteBackground" (click)="viewProfile(user.userId)">
             <ion-avatar item-left>
                 <img src="{{user.photoURL}}" />
             </ion-avatar>
@@ -48,12 +49,17 @@
                 <ion-icon name="heart"></ion-icon>
                 <p>{{user.score}}</p>
             </button>
+
+            <button class="commentIcon" ion-button icon-only>
+                <ion-icon class="commentIcon" name="md-text"></ion-icon>
+                <p *ngIf="user.commentLength > 0">{{user.commentLength}}</p>
+            </button>
         </ion-card-content>
     </ion-card>
 
     <ion-card margin-left margin-right class="whiteBackground"  *ngFor="let comment of comments">
 
-    <ion-item class="whiteBackground">
+    <ion-item class="whiteBackground" (click)="viewProfile(comment.userId)">
         <ion-avatar item-left>
             <img src={{comment.photoURL}} />
         </ion-avatar>
