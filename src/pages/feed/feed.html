@@ -20,7 +20,7 @@
         </ion-refresher-content>
     </ion-refresher>
 
-    
+    <button style="margin-top: 50px;" (click)="postVideo()">video</button>
 
     <ion-card margin-top class="whiteBackground" *ngFor="let item of items">
 
@@ -41,6 +41,11 @@
                 <img src={{item.postPhotoURL}} *ngIf="item.postPhotoURL">
             </section>
 
+            <section class="videoContainer" *ngIf="item.videoURL" (click)="startVideo(item.videoURL)">
+                <ion-icon class="playIcon" name="ios-play-outline"></ion-icon>
+                <img src={{item.thumbURL}} >
+                
+            </section>
             <button *ngIf="item.haveILiked === true" [ngClass]="item.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(item, item.userId, item.postId)" ion-button icon-only>
                 <ion-icon  name="heart"></ion-icon>
                 <p>{{item.score}}</p>
@@ -54,6 +59,7 @@
             <button class="commentIcon" (click)="openModal(item.userId, item.postId)" ion-button icon-only>
                 <ion-icon class="commentIcon" name="md-text"></ion-icon>
                 <p *ngIf="item.commentLength > 0">{{item.commentLength}}</p>
+                <p style="color: white;" *ngIf="item.commentLength === 0">0</p>
             </button>
             
 

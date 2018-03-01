@@ -1,3 +1,14 @@
+.videoContainer {
+  text-align: center;
+}
+
+.playIcon {
+  font-size: 100px;
+  position: absolute;
+  margin-top: 60%;
+  color: white;
+}
+
 .commentIcon {
   float: right;
   margin: 0.4rem 0.2rem;

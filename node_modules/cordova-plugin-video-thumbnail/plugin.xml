@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-plugin-video-thumbnail"
+        version="2.0.1">
+    <engines>
+        <engine name="cordova" version=">=4.0.0" />
+    </engines>
+    <name>Video Thumbnail</name>
+    <description>Create video thumbnails from video file paths on Android</description>
+    <author>Lewis Barnes</author>
+    <keywords>video,thumbnail,android</keywords>
+    <license>MIT</license>
+    
+    <js-module src="www/VideoThumbnail.js" name="video-thumbnail">
+        <clobbers target="navigator.createThumbnail" />
+    </js-module>
+
+    <platform name="android">
+        <!-- android-specific elements -->
+        <config-file target="config.xml" parent="/*">
+            <feature name="VideoThumbnail">
+                <param name="android-package" value="com.lewie9021.videothumbnail.VideoThumbnail" />
+            </feature>
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        </config-file>
+        
+        <source-file src="src/android/VideoThumbnail.java" target-dir="src/com/lewie9021/video-thumbnail" />
+    </platform>
+</plugin>

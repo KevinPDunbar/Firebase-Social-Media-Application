@@ -6,11 +6,18 @@ import { AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
+import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture';
+import { StreamingMedia, StreamingVideoOptions, StreamingAudioOptions } from '@ionic-native/streaming-media';
+
 import { ViewProfilePage } from '../view-profile/view-profile';
 import { MyProfilePage } from '../my-profile/my-profile';
 import { ViewPostPage } from '../view-post/view-post';
 import { SearchPage } from '../search/search';
 import { NotificationsPage } from '../notifications/notifications';
+
+import { Media, MediaObject } from '@ionic-native/media';   
+import { File } from '@ionic-native/file';
+import { VideoEditor, CreateThumbnailOptions } from '@ionic-native/video-editor';
 
 /**
  * Generated class for the FeedPage page.
@@ -32,9 +39,9 @@ export class FeedPage {
 
     public users = [];
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public authData: AuthData, public alertCtrl: AlertController, private camera: Camera, private modal: ModalController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public authData: AuthData, public alertCtrl: AlertController, private camera: Camera, private modal: ModalController, private mediaCapture: MediaCapture, private media: Media, private file: File, private streamingMedia: StreamingMedia, private videoEditor: VideoEditor) {
 
- 
+
     }
 
 
@@ -72,9 +79,20 @@ export class FeedPage {
 
         }
 
-        const myModal = this.modal.create(ViewPostPage, { userId, postId }, options); 
+        const myModal = this.modal.create(ViewPostPage, { userId, postId }, options);
 
         myModal.present();
+    }
+
+    startVideo(url) {
+        let options: StreamingVideoOptions = {
+            successCallback: () => { console.log('Finished Video') },
+            errorCallback: (e) => { console.log('Error: ', e) },
+            orientation: 'portrait'
+        };
+
+        
+        this.streamingMedia.playVideo(url, options);
     }
 
     getId(i) {
@@ -99,8 +117,7 @@ export class FeedPage {
 
 
                     console.log("UNREAD: " + childSnapshot.val().recieveId);
-                    if (childSnapshot.val().recieveId === myId)
-                    {
+                    if (childSnapshot.val().recieveId === myId) {
                         unreadClone.push(1);
                     }
 
@@ -109,16 +126,14 @@ export class FeedPage {
             })
     }
 
-    viewMyProfile()
-    {
+    viewMyProfile() {
         this.navCtrl.push(MyProfilePage);
     }
 
 
-    viewProfile(userId)
-    {
+    viewProfile(userId) {
         console.log("THE PASSED IN ID :" + userId);
-       // this.navCtrl.push(ViewProfilePage);
+        // this.navCtrl.push(ViewProfilePage);
 
         this.navCtrl.push(ViewProfilePage, {
             userId: userId
@@ -138,7 +153,7 @@ export class FeedPage {
 
     search($event) {
 
-        
+
 
         this.users = [];
 
@@ -148,8 +163,8 @@ export class FeedPage {
         console.log("Q IS: " + q);
 
         let userRef = firebase.database().ref('userProfile/')
-        .once("value")
-            .then(function (snapshot){
+            .once("value")
+            .then(function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     console.log("CHILDSNAP : " + childSnapshot.val().firstName);
 
@@ -157,13 +172,12 @@ export class FeedPage {
                     let lastName = childSnapshot.val().lastName;
                     let photoURL = childSnapshot.val().profilePicture;
                     let userId = childSnapshot.key;
-                    
+
 
                     console.log("LENGTH: " + q.length);
 
 
-                    if (firstName.startsWith(q))
-                    {
+                    if (firstName.startsWith(q)) {
                         results.push({ "firstName": firstName, "lastName": lastName, "userId": userId, "photoURL": photoURL });
                     }
 
@@ -172,20 +186,20 @@ export class FeedPage {
                         results.push({ "firstName": firstName, "lastName": lastName });
                     }*/
 
-                    
+
 
 
                 })
 
             })
 
-       
 
-        
-        
 
-            
-        
+
+
+
+
+
 
     }
 
@@ -244,7 +258,7 @@ export class FeedPage {
 
 
 
-             
+
 
 
 
@@ -259,25 +273,23 @@ export class FeedPage {
                                     let postId = childSnapshot.key;
                                     let timeStamp = (snapshot.val() && snapshot.val().Date) || 'There is no date';
                                     let postPhotoURL = snapshot.val().photoURL;
+                                    let postVideoURL = snapshot.val().videoURL || '';
+                                    let postVideoThumbURL = snapshot.val().videoThumbURL || '';
                                     let likes = snapshot.val().likes || [];
                                     let haveIliked = false;
 
-                                    for (let i = 0; i < likes.length; i++)
-                                    {
-                                        if (likes[i] === myId)
-                                        {
+                                    for (let i = 0; i < likes.length; i++) {
+                                        if (likes[i] === myId) {
                                             haveIliked = true;
                                         }
                                     }
-                                   
+
                                     let comments = (snapshot.val() && snapshot.val().comments) || [];
                                     let commentLength;
-                                    if (comments.length > 0)
-                                    {
+                                    if (comments.length > 0) {
                                         commentLength = comments.length;
                                     }
-                                    else
-                                    {
+                                    else {
                                         commentLength = 0;
                                     }
                                     console.log("Comment Length: " + commentLength);
@@ -323,31 +335,29 @@ export class FeedPage {
                                         let firstName = (snapshot.val() && snapshot.val().firstName) || 'There is no name';
                                         let lastName = (snapshot.val() && snapshot.val().lastName) || 'There is no name';
                                         let photoURL = snapshot.val().profilePicture;
-                                        
 
                                         console.log("NAME TEST: " + name);
-                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": diff, "postPhotoURL": postPhotoURL, "timestamp": timeStamp, "commentLength": commentLength, "haveILiked": haveIliked });
+                                        bbb.push({ "firstName": firstName, "lastName": lastName, "photoURL": photoURL, "videoURL": postVideoURL, "thumbURL": postVideoThumbURL, "text": text, "score": score, "userId": userId, "postId": postId, "date": diff, "postPhotoURL": postPhotoURL, "timestamp": timeStamp, "commentLength": commentLength, "haveILiked": haveIliked });
 
-                                        for (let i = 0; i < bbb.length; i++)
-                                        {
+                                        for (let i = 0; i < bbb.length; i++) {
                                             bbb.sort(function (a, b) {
                                                 return -(a.timestamp - b.timestamp);
                                             });
                                         }
-                                        
+
                                     })
 
-                                    
+
 
                                     //hard coded for now
                                     let picture = "https://firebasestorage.googleapis.com/v0/b/login-2aa53.appspot.com/o/anon_user.gif?alt=media&token=723b0c9d-76a6-40ea-ba67-34e058447c0a";
 
-                                    
 
-                                    
+
+
                                 });
 
-                                
+
 
 
 
@@ -366,7 +376,7 @@ export class FeedPage {
 
     getPosts() {
 
-        
+
 
 
         let bbb = this.items;
@@ -429,9 +439,9 @@ export class FeedPage {
                         //console.log(score);
 
                         let name = firstName + " " + lastName;
-                        
+
                         bbb.push({ "name": name, "text": text, "score": score });
-                    });                 
+                    });
                 }
             });
 
@@ -442,7 +452,7 @@ export class FeedPage {
         let userId = firebase.auth().currentUser.uid;
         const time = firebase.database.ServerValue.TIMESTAMP;
 
-     try {
+        try {
             const options: CameraOptions = {
                 quality: 100,
                 targetWidth: 600,
@@ -468,12 +478,12 @@ export class FeedPage {
 
 
             const image = 'data:image/jpeg;base64,' + result;
-           
 
-            
+
+
 
             const pictures = firebase.storage().ref('/' + userId + '/' + 'picture' + newPostKey);
-           // pictures.putString(image, `data_url`);
+            // pictures.putString(image, `data_url`);
 
 
 
@@ -484,16 +494,123 @@ export class FeedPage {
                 firebase.database().ref('Posts/' + userId + '/' + newPostKey).child('photoURL').set(url);
             });
 
-            
-           
+
+
 
         }
         catch (e) {
             console.log(e);
-     }
+        }
 
 
-     }
+    }
+
+    postVideo() {
+
+        let userId = firebase.auth().currentUser.uid;
+        const time = firebase.database.ServerValue.TIMESTAMP;
+
+        
+
+        this.mediaCapture.captureVideo({ limit: 1, duration: 60, quality: 1 }).then((data: MediaFile[]) => {
+            let index = data[0].fullPath.lastIndexOf('/'), finalPath = data[0].fullPath.substr(0, index);
+            this.file.readAsArrayBuffer(finalPath, data[0].name).then((file) => {
+
+                let post = firebase.database().ref('/Posts').child(userId).push({
+                    Text: "",
+                    Score: 1,
+                    Date: firebase.database.ServerValue.TIMESTAMP,
+                    UserId: userId
+                });
+
+                const newPostKey = post.key;
+                console.log(newPostKey);
+
+                const videoRef = firebase.storage().ref('/' + userId + '/' + 'video' + newPostKey);
+
+                let blob = new Blob([file], { type: data[0].type });
+
+                videoRef.put(blob).then(function (snapshot) {
+                    console.log('Uploaded a video');
+                    var url = snapshot.downloadURL;
+                    //add it to firestore
+                    firebase.database().ref('Posts/' + userId + '/' + newPostKey).child('videoURL').set(url);
+                });
+                //let task = videoRef.child(data[0].name).put(blob);
+
+                
+
+                //
+                let numstr = 1;
+                let filedir = this.file.dataDirectory;
+
+                var path = data[0].fullPath.replace('/private', 'file://');
+                var ind = (path.lastIndexOf('/') + 1);
+                var orgFilename = path.substring(ind);
+                var orgFilePath = path.substring(0, ind);
+
+                console.log("videopath", path);
+                //SAVE FILE
+
+                var option: CreateThumbnailOptions = { fileUri: path, width: 500, height: 500, atTime: 1, outputFileName: 'sample' + numstr, quality: 100 };
+                    this.videoEditor.createThumbnail(option).then(result => {
+                        //result-path of thumbnail
+                        //localStorage.setItem('videoNum', numstr.toString());
+                        console.log("result: " + result);
+
+                        let path2 = 'file://' + result;
+
+                        const videoRef2 = firebase.storage().ref('/' + userId + '/' + 'thumb' + newPostKey);
+
+                        let index = path2.lastIndexOf('/'), finalPath = path2.substr(0, index);
+                        this.file.readAsArrayBuffer(finalPath, 'sample1.jpg').then((file) => {
+
+                            let thumbBlob = new Blob([file], { type: 'image/jpeg' });
+                            videoRef2.put(thumbBlob).then(function (snapshot) {
+                                console.log('Uploaded a thumbnail');
+                                var url = snapshot.downloadURL;
+                                console.log("thumb url: " + url);
+                                //add it to firestore
+                                firebase.database().ref('Posts/' + userId + '/' + newPostKey).child('videoThumbURL').set(url);
+                            });
+
+                        }).catch(err => { console.log(err); });
+                        
+                        //
+
+
+                        
+                       /* videoRef.put(blob2).then(function (snapshot) {
+                            console.log('Uploaded a video');
+                            var url = snapshot.downloadURL;
+                            //add it to firestore
+                            firebase.database().ref('Posts/' + userId + '/' + newPostKey).child('videoURL').set(url);
+                        }); */
+                    }).catch(e => {
+                        // alert('fail video editor');
+                    });
+               
+
+                //
+
+
+                /*videoRef.put().then(function (snapshot) {
+                    console.log('Uploaded a video');
+                    var url = snapshot.downloadURL;
+                    //add it to firestore
+                    firebase.database().ref('Posts/' + userId + '/' + newPostKey).child('videoURL').set(url);
+                }); */
+
+
+                
+            }).catch(err => { console.log(err); });
+        })
+
+       
+}
+
+
+
 
     showPrompt() {
         let prompt = this.alertCtrl.create({

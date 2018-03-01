@@ -53,6 +53,7 @@
             <button class="commentIcon" ion-button icon-only>
                 <ion-icon class="commentIcon" name="md-text"></ion-icon>
                 <p *ngIf="user.commentLength > 0">{{user.commentLength}}</p>
+                <p style="color: white;" *ngIf="user.commentLength === 0">0</p>
             </button>
         </ion-card-content>
     </ion-card>

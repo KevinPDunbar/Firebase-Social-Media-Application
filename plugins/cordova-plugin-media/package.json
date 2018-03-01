@@ -1,0 +1,153 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-media@5.0.2",
+        "scope": null,
+        "escapedName": "cordova-plugin-media",
+        "name": "cordova-plugin-media",
+        "rawSpec": "5.0.2",
+        "spec": "5.0.2",
+        "type": "version"
+      },
+      "C:\\Users\\kevin\\Firebase-Social-Media-Application"
+    ]
+  ],
+  "_from": "cordova-plugin-media@5.0.2",
+  "_id": "cordova-plugin-media@5.0.2",
+  "_inCache": true,
+  "_location": "/cordova-plugin-media",
+  "_nodeVersion": "6.10.2",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-media-5.0.2.tgz_1517268357636_0.5054867067374289"
+  },
+  "_npmUser": {
+    "name": "surajpindoria",
+    "email": "suraj.pindoria@yahoo.com"
+  },
+  "_npmVersion": "4.6.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-media@5.0.2",
+    "scope": null,
+    "escapedName": "cordova-plugin-media",
+    "name": "cordova-plugin-media",
+    "rawSpec": "5.0.2",
+    "spec": "5.0.2",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-media/-/cordova-plugin-media-5.0.2.tgz",
+  "_shasum": "3345769c07e6a46a71c97e1bb434dacca5c8d80b",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-media@5.0.2",
+  "_where": "C:\\Users\\kevin\\Firebase-Social-Media-Application",
+  "author": {
+    "name": "Apache Software Foundation"
+  },
+  "bugs": {
+    "url": "https://issues.apache.org/jira/browse/CB"
+  },
+  "cordova": {
+    "id": "cordova-plugin-media",
+    "platforms": [
+      "android",
+      "browser",
+      "ios",
+      "windows"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova Media Plugin",
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "3345769c07e6a46a71c97e1bb434dacca5c8d80b",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-media/-/cordova-plugin-media-5.0.2.tgz"
+  },
+  "engines": {
+    "cordovaDependencies": {
+      "3.0.0": {
+        "cordova-android": ">=6.1.0"
+      },
+      "4.0.0": {
+        "cordova-android": ">=6.3.0"
+      },
+      "6.0.0": {
+        "cordova": ">100"
+      }
+    }
+  },
+  "homepage": "https://github.com/apache/cordova-plugin-media#readme",
+  "keywords": [
+    "cordova",
+    "media",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-browser",
+    "cordova-ios",
+    "cordova-windows"
+  ],
+  "license": "Apache-2.0",
+  "maintainers": [
+    {
+      "name": "surajpindoria",
+      "email": "suraj.pindoria@yahoo.com"
+    },
+    {
+      "name": "jcesarmobile",
+      "email": "jcesarmobile@gmail.com"
+    },
+    {
+      "name": "macdonst",
+      "email": "simon.macdonald@gmail.com"
+    },
+    {
+      "name": "bowserj",
+      "email": "bowserj@apache.org"
+    },
+    {
+      "name": "purplecabbage",
+      "email": "purplecabbage@gmail.com"
+    },
+    {
+      "name": "filmaj",
+      "email": "maj.fil@gmail.com"
+    },
+    {
+      "name": "shazron",
+      "email": "shazron@gmail.com"
+    },
+    {
+      "name": "csantanapr",
+      "email": "csantana23@gmail.com"
+    },
+    {
+      "name": "kotikov.vladimir",
+      "email": "kotikov.vladimir@gmail.com"
+    },
+    {
+      "name": "stevegill",
+      "email": "stevengill97@gmail.com"
+    }
+  ],
+  "name": "cordova-plugin-media",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apache/cordova-plugin-media.git"
+  },
+  "scripts": {
+    "jshint": "jshint www && jshint src && jshint tests",
+    "test": "npm run jshint"
+  },
+  "types": "./types/index.d.ts",
+  "version": "5.0.2"
+}

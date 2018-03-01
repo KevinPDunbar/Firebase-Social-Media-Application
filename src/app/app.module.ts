@@ -28,6 +28,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from '../providers/auth-data';
 
 import { Camera } from '@ionic-native/camera';
+import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture';
+import { Media, MediaObject } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
+import { StreamingMedia } from '@ionic-native/streaming-media'; 
+import { VideoEditor } from '@ionic-native/video-editor';
 
 import { Config } from 'ionic-angular';
 import { ModalScaleUpEnterTransition } from '../scale-up-enter.transition';
@@ -84,8 +89,13 @@ import { ModalScaleUpLeaveTransition } from '../scale-up-leave.transition';
       AuthData,
     StatusBar,
       SplashScreen,
-    Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+      Camera,
+      MediaCapture,
+      Media,
+      StreamingMedia,
+      File,
+      VideoEditor,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}, 
   ]
 })
 export class AppModule {

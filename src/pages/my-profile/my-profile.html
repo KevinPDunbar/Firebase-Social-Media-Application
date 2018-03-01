@@ -83,6 +83,7 @@
                     <button class="commentIcon" (click)="openModal(post.userId, post.postId)" ion-button icon-only>
                         <ion-icon class="commentIcon" name="md-text"></ion-icon>
                         <p *ngIf="post.commentLength > 0">{{post.commentLength}}</p>
+                        <p style="color: white;" *ngIf="post.commentLength === 0">0</p>
                     </button>
                 </ion-card-content>
 

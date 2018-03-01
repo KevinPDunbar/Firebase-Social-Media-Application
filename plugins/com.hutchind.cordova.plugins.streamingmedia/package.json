@@ -1,0 +1,91 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-streaming-media",
+        "scope": null,
+        "escapedName": "cordova-plugin-streaming-media",
+        "name": "cordova-plugin-streaming-media",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\kevin\\Firebase-Social-Media-Application"
+    ]
+  ],
+  "_from": "cordova-plugin-streaming-media@latest",
+  "_id": "cordova-plugin-streaming-media@1.0.2",
+  "_inCache": true,
+  "_location": "/cordova-plugin-streaming-media",
+  "_nodeVersion": "5.3.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-streaming-media-1.0.2.tgz_1458507703761_0.6199249674100429"
+  },
+  "_npmUser": {
+    "name": "faceleg",
+    "email": "mike@pagesofinterest.net"
+  },
+  "_npmVersion": "3.5.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-streaming-media",
+    "scope": null,
+    "escapedName": "cordova-plugin-streaming-media",
+    "name": "cordova-plugin-streaming-media",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-streaming-media/-/cordova-plugin-streaming-media-1.0.2.tgz",
+  "_shasum": "d36848015325208a0f997fba4ce98067d92d2ccb",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-streaming-media",
+  "_where": "C:\\Users\\kevin\\Firebase-Social-Media-Application",
+  "author": {
+    "name": "Nicholas Hutchind"
+  },
+  "bugs": {
+    "url": "https://github.com/nchutchind/Streaming-Media-Cordova-Plugin/issues"
+  },
+  "dependencies": {},
+  "description": "This plugin allows you to stream audio and video in a fullscreen, native player on iOS and Android.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "d36848015325208a0f997fba4ce98067d92d2ccb",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-streaming-media/-/cordova-plugin-streaming-media-1.0.2.tgz"
+  },
+  "gitHead": "6aa617a52c58fb89024d18f42b031f478a07b569",
+  "homepage": "https://github.com/nchutchind/Streaming-Media-Cordova-Plugin#readme",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova:android",
+    "cordova:ios",
+    "cordova:media",
+    "cordova:streaming"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "faceleg",
+      "email": "mike@pagesofinterest.net"
+    }
+  ],
+  "name": "cordova-plugin-streaming-media",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nchutchind/Streaming-Media-Cordova-Plugin.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.2"
+}

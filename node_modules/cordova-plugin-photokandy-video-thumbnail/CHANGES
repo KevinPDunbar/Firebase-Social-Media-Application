@@ -1,0 +1,18 @@
+# 2.1.0
+
+- Fixed success/failure callback reversal if no options were specified; fixes Issue #10
+  Thanks go to @benmcmaster!
+
+# 2.0.1
+
+- Fixed up `readme.md`
+- Example app pulls from repository instead of `..`
+
+# 2.0.0
+
+- Support for cordova-ios 4.x and cordova-android 5.x
+- Supports cdvfile://
+- Can optionally resize thumbnail to desired output
+- Can pull a frame from a desired timestamp (iOS only)
+- Can return a base64-encoded string / ArrayBuffer instead of a file
+- Can use Promises if no callbacks are supplied and the environment supports Promises

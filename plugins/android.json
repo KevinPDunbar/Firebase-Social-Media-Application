@@ -27,6 +27,24 @@
     },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "cordova-plugin-media-capture": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "cordova-plugin-media": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "com.hutchind.cordova.plugins.streamingmedia": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "cordova-plugin-video-editor": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "cordova-plugin-video-thumbnail": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
     }
   },
   "dependent_plugins": {}
