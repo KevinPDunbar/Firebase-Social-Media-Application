@@ -36,6 +36,13 @@
     <feature name="StreamingMedia">
         <param name="android-package" value="com.hutchind.cordova.plugins.streamingmedia.StreamingMedia" />
     </feature>
+    <feature name="FilePath">
+        <param name="android-package" value="com.hiddentao.cordova.filepath.FilePath" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="FileChooser">
+        <param name="android-package" value="com.megster.cordova.FileChooser" />
+    </feature>
     <feature name="VideoEditor">
         <param name="android-package" value="org.apache.cordova.videoeditor.VideoEditor" />
     </feature>

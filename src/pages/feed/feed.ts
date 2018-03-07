@@ -6,7 +6,7 @@ import { AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
-import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture';
+import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions } from '@ionic-native/media-capture';
 import { StreamingMedia, StreamingVideoOptions, StreamingAudioOptions } from '@ionic-native/streaming-media';
 
 import { ViewProfilePage } from '../view-profile/view-profile';
@@ -14,10 +14,13 @@ import { MyProfilePage } from '../my-profile/my-profile';
 import { ViewPostPage } from '../view-post/view-post';
 import { SearchPage } from '../search/search';
 import { NotificationsPage } from '../notifications/notifications';
+import { Login } from '../login/login'
 
 import { Media, MediaObject } from '@ionic-native/media';   
 import { File } from '@ionic-native/file';
 import { VideoEditor, CreateThumbnailOptions } from '@ionic-native/video-editor';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
 
 /**
  * Generated class for the FeedPage page.
@@ -39,9 +42,19 @@ export class FeedPage {
 
     public users = [];
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public authData: AuthData, public alertCtrl: AlertController, private camera: Camera, private modal: ModalController, private mediaCapture: MediaCapture, private media: Media, private file: File, private streamingMedia: StreamingMedia, private videoEditor: VideoEditor) {
+    nativepath: any;
+
+    constructor(public navCtrl: NavController, public navParams: NavParams, public authData: AuthData, public alertCtrl: AlertController, private camera: Camera, private modal: ModalController, private mediaCapture: MediaCapture, private media: Media, private file: File, private streamingMedia: StreamingMedia, private videoEditor: VideoEditor, private fileChooser: FileChooser, public filePath: FilePath) {
+
+        firebase.auth().onAuthStateChanged((user) => {
+
+            if (!user) {
+                console.log("not login");
+                this.navCtrl.setRoot(Login)
 
 
+            } 
+        });
     }
 
 
@@ -447,6 +460,52 @@ export class FeedPage {
 
     }
 
+
+
+   /* uploadfn() {
+        
+
+        this.fileChooser.open().then((url) => {
+            (<any>window).file.readAsArrayBuffer(url).then((file) => {
+
+                var imgBlob = new Blob([file], { type: 'image/jpeg' });
+                //do what you want to do with the file
+
+                let userId = firebase.auth().currentUser.uid;
+                const time = firebase.database.ServerValue.TIMESTAMP;
+
+
+                let post = firebase.database().ref('/Posts').child(userId).push({
+                    Text: "",
+                    Score: 1,
+                    Date: firebase.database.ServerValue.TIMESTAMP,
+                    UserId: userId
+                });
+
+                const newPostKey = post.key;
+
+
+                const pictures = firebase.storage().ref('/' + userId + '/' + 'picture' + newPostKey);
+                // pictures.putString(image, `data_url`);
+
+
+
+                pictures.put(imgBlob).then(function (snapshot) {
+                    console.log('Uploaded a data_url string!');
+                    var url = snapshot.downloadURL;
+                    //add it to firestore
+                    firebase.database().ref('Posts/' + userId + '/' + newPostKey).child('photoURL').set(url);
+                });
+
+            })
+
+            })
+            
+        
+    } */
+
+    
+
     async postPhoto() {
 
         let userId = firebase.auth().currentUser.uid;
@@ -510,9 +569,7 @@ export class FeedPage {
         let userId = firebase.auth().currentUser.uid;
         const time = firebase.database.ServerValue.TIMESTAMP;
 
-        
-
-        this.mediaCapture.captureVideo({ limit: 1, duration: 60, quality: 1 }).then((data: MediaFile[]) => {
+        this.mediaCapture.captureVideo({limit: 1, duration: 30, quality: 1 }).then((data: MediaFile[]) => {
             let index = data[0].fullPath.lastIndexOf('/'), finalPath = data[0].fullPath.substr(0, index);
             this.file.readAsArrayBuffer(finalPath, data[0].name).then((file) => {
 

@@ -1,0 +1,96 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-filepath",
+        "scope": null,
+        "escapedName": "cordova-plugin-filepath",
+        "name": "cordova-plugin-filepath",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\kevin\\Firebase-Social-Media-Application"
+    ]
+  ],
+  "_from": "cordova-plugin-filepath@latest",
+  "_id": "cordova-plugin-filepath@1.2.0",
+  "_inCache": true,
+  "_location": "/cordova-plugin-filepath",
+  "_nodeVersion": "8.9.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-filepath_1.2.0_1518100948108_0.5083264832235586"
+  },
+  "_npmUser": {
+    "name": "hiddentao",
+    "email": "ram@hiddentao.com"
+  },
+  "_npmVersion": "5.6.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-filepath",
+    "scope": null,
+    "escapedName": "cordova-plugin-filepath",
+    "name": "cordova-plugin-filepath",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-filepath/-/cordova-plugin-filepath-1.2.0.tgz",
+  "_shasum": "63cc36c7610404ab8451cd57f4dc92303a027a48",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-filepath",
+  "_where": "C:\\Users\\kevin\\Firebase-Social-Media-Application",
+  "author": {
+    "name": "Ramesh Nair",
+    "email": "ram@hiddentao.com"
+  },
+  "bugs": {
+    "url": "https://github.com/hiddentao/cordova-plugin-filepath/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-filepath",
+    "platforms": [
+      "android"
+    ]
+  },
+  "dependencies": {},
+  "description": "Resolve native file paths from content URLs for Cordova platforms",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-8sZ4z+cMUPRGsr2HPUAK4/FVXGUeMEMbFcyoPZTf2Q/TNlhBJxD5E6gdwSDiBlFVqjcpW3IAZtoNdTe9XgOf4A==",
+    "shasum": "63cc36c7610404ab8451cd57f4dc92303a027a48",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-filepath/-/cordova-plugin-filepath-1.2.0.tgz",
+    "fileCount": 7,
+    "unpackedSize": 30994
+  },
+  "gitHead": "b153a350ab360fc6bd6ffe47c8828b89cabebabf",
+  "homepage": "https://github.com/hiddentao/cordova-plugin-filepath#readme",
+  "keywords": [
+    "cordova",
+    "file",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "license": "Apache 2.0",
+  "maintainers": [
+    {
+      "name": "hiddentao",
+      "email": "ram@hiddentao.com"
+    }
+  ],
+  "name": "cordova-plugin-filepath",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hiddentao/cordova-plugin-filepath.git"
+  },
+  "version": "1.2.0"
+}

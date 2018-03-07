@@ -6,6 +6,8 @@ import { NotificationsPage } from '../notifications/notifications';
 
 import { ViewProfilePage } from '../view-profile/view-profile';
 
+import { StreamingMedia, StreamingVideoOptions, StreamingAudioOptions } from '@ionic-native/streaming-media';
+
 /**
  * Generated class for the ViewPostPage page.
  *
@@ -27,7 +29,7 @@ export class ViewPostPage {
     public passedUserId;
     public passedPostId;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, private view: ViewController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, private view: ViewController, private streamingMedia: StreamingMedia) {
 
         this.passedUserId = navParams.get("userId");
         console.log("PASSED USER ID : " + this.passedUserId);
@@ -63,6 +65,17 @@ export class ViewPostPage {
   closeModal() {
       this.view.dismiss();
   }
+
+startVideo(url) {
+    let options: StreamingVideoOptions = {
+        successCallback: () => { console.log('Finished Video') },
+        errorCallback: (e) => { console.log('Error: ', e) },
+        orientation: 'portrait'
+    };
+
+
+    this.streamingMedia.playVideo(url, options);
+}
 
     viewProfile(userId) {
         this.navCtrl.push(ViewProfilePage, {
@@ -228,6 +241,8 @@ export class ViewPostPage {
       let postTimestamp;
       let date;
       let postPhotoURL; 
+      let postVideoURL;
+      let postVideoThumbURL;
       let score;
       let likes = [];
       let haveILiked;
@@ -239,6 +254,8 @@ export class ViewPostPage {
           postScore = (snapshot.val() && snapshot.val().Score) || 'first name';
           postTimestamp = (snapshot.val() && snapshot.val().Date) || 'no date found';
           postPhotoURL = snapshot.val().photoURL;
+          postVideoURL = snapshot.val().videoURL || '';
+          postVideoThumbURL = snapshot.val().videoThumbURL || '';
           score = snapshot.val().score;
           likes = snapshot.val().likes || [];
 
@@ -307,7 +324,7 @@ export class ViewPostPage {
           photoURL = snapshot.val().profilePicture;
 
           console.log("First Name: " + firstName + " Last Name " + lastName);
-          userClone.push({ "userId": userId, "firstName": firstName, "lastName": lastName, "text": postText, "date": diff, "score": postScore, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "likes": likes, "haveILiked": haveILiked, "postId": postId, "commentLength": commentLength });
+          userClone.push({ "userId": userId, "firstName": firstName, "lastName": lastName, "text": postText, "date": diff, "score": postScore, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "videoURL": postVideoURL, "thumbURL": postVideoThumbURL, "likes": likes, "haveILiked": haveILiked, "postId": postId, "commentLength": commentLength });
       })
 
       

@@ -5,6 +5,7 @@ import { AuthData } from '../../providers/auth-data';
 import { ViewPostPage } from '../view-post/view-post';
 import { NotificationsPage } from '../notifications/notifications';
 
+import { StreamingMedia, StreamingVideoOptions, StreamingAudioOptions } from '@ionic-native/streaming-media';
 
 /**
  * Generated class for the ViewProfilePage page.
@@ -23,6 +24,7 @@ export class ViewProfilePage {
     public posts = [];
     public users = [];
 
+
     public follows = [];
     public unreadNotifications = [];
 
@@ -31,7 +33,7 @@ export class ViewProfilePage {
 
     public isFollowing = false;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController, private streamingMedia: StreamingMedia) {
 
         this.passedUserId = navParams.get("userId");
         console.log("PASSED USER ID : " + this.passedUserId);
@@ -62,6 +64,17 @@ export class ViewProfilePage {
           refresher.complete();
       }, 2000);
   }
+
+    startVideo(url) {
+        let options: StreamingVideoOptions = {
+            successCallback: () => { console.log('Finished Video') },
+            errorCallback: (e) => { console.log('Error: ', e) },
+            orientation: 'portrait'
+        };
+
+
+        this.streamingMedia.playVideo(url, options);
+    }
 
   goToNotificationsPage() {
       this.navCtrl.push(NotificationsPage);
@@ -127,7 +140,6 @@ openModal(userId, postId) {
       let postsClone = this.posts;
       let userClone = this.users;
 
-
       let user = firebase.auth().currentUser;
 
       let Posts = firebase.database().ref('Posts/' + userId);
@@ -180,6 +192,8 @@ openModal(userId, postId) {
                       let score = (snapshot.val() && snapshot.val().Score);
                       let timeStamp = (snapshot.val() && snapshot.val().Date);
                       let postPhotoURL = snapshot.val().photoURL;
+                      let postVideoURL = snapshot.val().videoURL || '';
+                      let postVideoThumbURL = snapshot.val().videoThumbURL || '';
                       let likes = snapshot.val().likes || [];
                       let comments = snapshot.val().comments || [];
                       let haveIliked = false;
@@ -241,7 +255,7 @@ openModal(userId, postId) {
                       let name = firstName + " " + lastName;
                       
 
-                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": diff, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "userId": userId, "postId": userPostKeys[i], "likes": likes, "haveILiked": haveIliked, "commentLength": commentLength });
+                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": diff, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "videoURL": postVideoURL, "thumbURL": postVideoThumbURL, "userId": userId, "postId": userPostKeys[i], "likes": likes, "haveILiked": haveIliked, "commentLength": commentLength });
                   });
           
               }

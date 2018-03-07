@@ -353,6 +353,22 @@ module.exports = [
     "clobbers": [
       "navigator.createThumbnail"
     ]
+  },
+  {
+    "id": "cordova-plugin-filechooser.FileChooser",
+    "file": "plugins/cordova-plugin-filechooser/www/fileChooser.js",
+    "pluginId": "cordova-plugin-filechooser",
+    "clobbers": [
+      "fileChooser"
+    ]
+  },
+  {
+    "id": "cordova-plugin-filepath.FilePath",
+    "file": "plugins/cordova-plugin-filepath/www/FilePath.js",
+    "pluginId": "cordova-plugin-filepath",
+    "clobbers": [
+      "window.FilePath"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -370,7 +386,9 @@ module.exports.metadata =
   "cordova-plugin-media": "5.0.2",
   "com.hutchind.cordova.plugins.streamingmedia": "0.1.4",
   "cordova-plugin-video-editor": "1.1.3",
-  "cordova-plugin-video-thumbnail": "2.0.1"
+  "cordova-plugin-video-thumbnail": "2.0.1",
+  "cordova-plugin-filechooser": "1.0.1",
+  "cordova-plugin-filepath": "1.0.2"
 };
 // BOTTOM OF METADATA
 });

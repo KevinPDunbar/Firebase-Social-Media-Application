@@ -1,0 +1,82 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-filechooser",
+        "scope": null,
+        "escapedName": "cordova-plugin-filechooser",
+        "name": "cordova-plugin-filechooser",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\kevin\\Firebase-Social-Media-Application"
+    ]
+  ],
+  "_from": "cordova-plugin-filechooser@latest",
+  "_id": "cordova-plugin-filechooser@1.0.1",
+  "_inCache": true,
+  "_location": "/cordova-plugin-filechooser",
+  "_nodeVersion": "7.4.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-filechooser-1.0.1.tgz_1495042268201_0.37282017804682255"
+  },
+  "_npmUser": {
+    "name": "ihadeed",
+    "email": "i.hadeed@zyra.ca"
+  },
+  "_npmVersion": "4.0.5",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-filechooser",
+    "scope": null,
+    "escapedName": "cordova-plugin-filechooser",
+    "name": "cordova-plugin-filechooser",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-filechooser/-/cordova-plugin-filechooser-1.0.1.tgz",
+  "_shasum": "fa59e97b8cdd91260be0bec460db8ec5de93488f",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-filechooser",
+  "_where": "C:\\Users\\kevin\\Firebase-Social-Media-Application",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/ihadeed/cordova-filechooser/issues"
+  },
+  "dependencies": {},
+  "description": "Cordova FileChooser Plugin",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "fa59e97b8cdd91260be0bec460db8ec5de93488f",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-filechooser/-/cordova-plugin-filechooser-1.0.1.tgz"
+  },
+  "gitHead": "5ac369d9282fd3dc4c0649802a39d82c2eb6a1b7",
+  "homepage": "https://github.com/ihadeed/cordova-filechooser#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "ihadeed",
+      "email": "i.hadeed@zyra.ca"
+    }
+  ],
+  "name": "cordova-plugin-filechooser",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihadeed/cordova-filechooser.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.1"
+}

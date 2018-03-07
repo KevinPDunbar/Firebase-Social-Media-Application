@@ -45,6 +45,12 @@
     },
     "cordova-plugin-video-thumbnail": {
       "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "cordova-plugin-filechooser": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
+    },
+    "cordova-plugin-filepath": {
+      "PACKAGE_NAME": "com.ionicframework.auth334116"
     }
   },
   "dependent_plugins": {}

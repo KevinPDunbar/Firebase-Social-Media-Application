@@ -33,6 +33,8 @@ import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
 import { StreamingMedia } from '@ionic-native/streaming-media'; 
 import { VideoEditor } from '@ionic-native/video-editor';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
 
 import { Config } from 'ionic-angular';
 import { ModalScaleUpEnterTransition } from '../scale-up-enter.transition';
@@ -95,6 +97,8 @@ import { ModalScaleUpLeaveTransition } from '../scale-up-leave.transition';
       StreamingMedia,
       File,
       VideoEditor,
+      FileChooser,
+      FilePath,
     {provide: ErrorHandler, useClass: IonicErrorHandler}, 
   ]
 })

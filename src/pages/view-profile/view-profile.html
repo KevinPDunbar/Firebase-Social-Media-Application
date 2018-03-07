@@ -25,7 +25,10 @@
         </ion-refresher-content>
     </ion-refresher>
 
+
     <ion-card no-padding style="background-color: #1abc9c;" *ngFor="let user of users">
+
+
         <ion-item style="background-color: #1abc9c;" class="avatars">
             <ion-avatar>
                 <img  src={{user.photoURL}} />
@@ -60,31 +63,36 @@
                 <p>{{post.text}}</p>
                 <img class="postImage" src={{post.postPhotoURL}} *ngIf="post.postPhotoURL">
             </section>
-            <button *ngIf="post.haveILiked === true" [ngClass]="post.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(post, post.userId, post.postId)" ion-button icon-only>
-                <ion-icon name="heart"></ion-icon>
-                <p>{{post.score}}</p>
-            </button>
 
-            <button *ngIf="post.haveILiked === false" [ngClass]="post.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(post, post.userId, post.postId)" ion-button icon-only>
-                <ion-icon name="heart"></ion-icon>
-                <p>{{post.score}}</p>
-            </button>
+            <section class="videoContainer" *ngIf="post.videoURL" (click)="startVideo(post.videoURL)">
+                <ion-icon class="playIcon" name="ios-play-outline"></ion-icon>
+                <img src={{post.thumbURL}}>
+            </section>
 
-            <button class="commentIcon" (click)="openModal(post.userId, post.postId)" ion-button icon-only>
-                <ion-icon class="commentIcon" name="md-text"></ion-icon>
-                <p *ngIf="post.commentLength > 0">{{post.commentLength}}</p>
-                <p style="color: white;" *ngIf="post.commentLength === 0">0</p>
-            </button>
+
+            <section class="postInteractionIcons">
+                <button *ngIf="post.haveILiked === true" [ngClass]="post.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(post, post.userId, post.postId)" ion-button icon-only>
+                    <ion-icon name="heart"></ion-icon>
+                    <p>{{post.score}}</p>
+                </button>
+
+                <button *ngIf="post.haveILiked === false" [ngClass]="post.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(post, post.userId, post.postId)" ion-button icon-only>
+                    <ion-icon name="heart"></ion-icon>
+                    <p>{{post.score}}</p>
+                </button>
+
+                <button class="commentIcon" (click)="openModal(post.userId, post.postId)" ion-button icon-only>
+                    <ion-icon class="commentIcon" name="md-text"></ion-icon>
+                    <p *ngIf="post.commentLength > 0">{{post.commentLength}}</p>
+                    <p style="color: white;" *ngIf="post.commentLength === 0">0</p>
+                </button>
+            </section>
 
         </ion-card-content>
     </ion-card>
 
-    <div *ngIf="posts?.length < 1">
-        <hr>
-        <p>
-            No Posts found :(
-        </p>
-    </div>
+    
+   
 
    
 </ion-content>

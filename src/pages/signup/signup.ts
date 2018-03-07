@@ -5,7 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
 import { EmailValidator } from '../../validators/email';
 import {HomePage}from'../home/home';
-
+import { FeedPage } from '../feed/feed';
 
 /**
  * Generated class for the Signup page.
@@ -51,7 +51,7 @@ export class Signup {
             this.authData.signupUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.firstName, this.signupForm.value.lastName)
                 .then(() => {
                     this.loading.dismiss().then(() => {
-                        this.nav.setRoot(HomePage);
+                        this.nav.setRoot(FeedPage);
                     });
                 }, (error) => {
                     this.loading.dismiss().then(() => {

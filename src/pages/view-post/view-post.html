@@ -40,21 +40,28 @@
             <p>{{user.text}}</p>
             <img src={{user.postPhotoURL}} *ngIf="user.postPhotoURL">
 
-            <button *ngIf="user.haveILiked === true" [ngClass]="user.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(user, user.userId, user.postId)" ion-button icon-only>
-                <ion-icon name="heart"></ion-icon>
-                <p>{{user.score}}</p>
-            </button>
+            <section class="videoContainer" *ngIf="user.videoURL" (click)="startVideo(user.videoURL)">
+                <ion-icon class="playIcon" name="ios-play-outline"></ion-icon>
+                <img src={{user.thumbURL}}>
+            </section>
 
-            <button *ngIf="user.haveILiked === false" [ngClass]="user.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(user, user.userId, user.postId)" ion-button icon-only>
-                <ion-icon name="heart"></ion-icon>
-                <p>{{user.score}}</p>
-            </button>
+            <section class="postInteractionIcons">
+                <button *ngIf="user.haveILiked === true" [ngClass]="user.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(user, user.userId, user.postId)" ion-button icon-only>
+                    <ion-icon name="heart"></ion-icon>
+                    <p>{{user.score}}</p>
+                </button>
 
-            <button class="commentIcon" ion-button icon-only>
-                <ion-icon class="commentIcon" name="md-text"></ion-icon>
-                <p *ngIf="user.commentLength > 0">{{user.commentLength}}</p>
-                <p style="color: white;" *ngIf="user.commentLength === 0">0</p>
-            </button>
+                <button *ngIf="user.haveILiked === false" [ngClass]="user.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(user, user.userId, user.postId)" ion-button icon-only>
+                    <ion-icon name="heart"></ion-icon>
+                    <p>{{user.score}}</p>
+                </button>
+
+                <button class="commentIcon" ion-button icon-only>
+                    <ion-icon class="commentIcon" name="md-text"></ion-icon>
+                    <p *ngIf="user.commentLength > 0">{{user.commentLength}}</p>
+                    <p style="color: white;" *ngIf="user.commentLength === 0">0</p>
+                </button>
+            </section>
         </ion-card-content>
     </ion-card>
 

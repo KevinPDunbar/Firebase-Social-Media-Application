@@ -20,8 +20,6 @@
         </ion-refresher-content>
     </ion-refresher>
 
-    <button style="margin-top: 50px;" (click)="postVideo()">video</button>
-
     <ion-card margin-top class="whiteBackground" *ngFor="let item of items">
 
         <ion-item class="whiteBackground" (click)="viewProfile(item.userId)">
@@ -38,7 +36,7 @@
 
             <section (click)="openModal(item.userId, item.postId)">
                 <p>{{item.text}}</p>
-                <img src={{item.postPhotoURL}} *ngIf="item.postPhotoURL">
+                <img  src={{item.postPhotoURL}} *ngIf="item.postPhotoURL">
             </section>
 
             <section class="videoContainer" *ngIf="item.videoURL" (click)="startVideo(item.videoURL)">
@@ -46,22 +44,24 @@
                 <img src={{item.thumbURL}} >
                 
             </section>
-            <button *ngIf="item.haveILiked === true" [ngClass]="item.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(item, item.userId, item.postId)" ion-button icon-only>
-                <ion-icon  name="heart"></ion-icon>
-                <p>{{item.score}}</p>
-            </button>
 
-            <button *ngIf="item.haveILiked === false" [ngClass]="item.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(item, item.userId, item.postId)" ion-button icon-only>
-                <ion-icon name="heart"></ion-icon>
-                <p>{{item.score}}</p>
-            </button>
-           
-            <button class="commentIcon" (click)="openModal(item.userId, item.postId)" ion-button icon-only>
-                <ion-icon class="commentIcon" name="md-text"></ion-icon>
-                <p *ngIf="item.commentLength > 0">{{item.commentLength}}</p>
-                <p style="color: white;" *ngIf="item.commentLength === 0">0</p>
-            </button>
-            
+            <section class="postInteractionIcons">
+                <button *ngIf="item.haveILiked === true" [ngClass]="item.haveILiked === true ? 'likedPost': ''" (click)="unlikePost(item, item.userId, item.postId)" ion-button icon-only>
+                    <ion-icon name="heart"></ion-icon>
+                    <p>{{item.score}}</p>
+                </button>
+
+                <button *ngIf="item.haveILiked === false" [ngClass]="item.haveILiked === false ? 'notLikedPost': ''" (click)="likePost(item, item.userId, item.postId)" ion-button icon-only>
+                    <ion-icon name="heart"></ion-icon>
+                    <p>{{item.score}}</p>
+                </button>
+
+                <button class="commentIcon" (click)="openModal(item.userId, item.postId)" ion-button icon-only>
+                    <ion-icon class="commentIcon" name="md-text"></ion-icon>
+                    <p *ngIf="item.commentLength > 0">{{item.commentLength}}</p>
+                    <p style="color: white;" *ngIf="item.commentLength === 0">0</p>
+                </button>
+            </section>
 
 
            <!--<ion-badge style="float: right;" (click)="viewPost(item.userId, item.postId)" item-end>Replies {{item.commentLength}}</ion-badge>-->
@@ -85,13 +85,34 @@
         <ion-fab-list side="top" (click)="showPrompt()">
             <button ion-fab color="background-color"><ion-icon name="ios-add-outline" ></ion-icon></button>
         </ion-fab-list>
-        <ion-fab-list side="left" (click)="postPhoto()">
+
+       <!-- <ion-fab-list side="left" (click)="postPhoto()">
             <button ion-fab color="background-color"><ion-icon name="ios-camera-outline" ></ion-icon></button>
+            <button ion-fab color="background-color"><ion-icon name="ios-videocam-outline"></ion-icon></button>
+        </ion-fab-list> -->
+
+        <!--<ion-fab-list side="left">
+            <ion-fab>
+                <button ion-fab  class="attachIcon" style="color: black; background-color: white"><ion-icon name="ios-attach-outline"></ion-icon></button>
+                <ion-fab-list side="left">
+                    <button  class="attachIcon" ion-fab color="background-color"><ion-icon name="ios-camera-outline" (click)="postPhoto()"></ion-icon></button>
+                    <button class="attachIcon" ion-fab color="background-color"><ion-icon name="ios-videocam-outline" (click)="postVideo()"></ion-icon></button>
+                </ion-fab-list>
+            </ion-fab>
+        </ion-fab-list> -->
+
+        <ion-fab-list side="left">
+            <button ion-fab color="background-color" (click)="postPhoto()"><ion-icon name="ios-camera-outline"></ion-icon></button>
+            <button ion-fab color="background-color" (click)="postVideo()"><ion-icon name="ios-videocam-outline"></ion-icon></button>
         </ion-fab-list>
+
         <ion-fab-list side="right" (click)="viewMyProfile()">
             <button ion-fab color="background-color"><ion-icon name="ios-person-outline" ></ion-icon></button>
         </ion-fab-list>
         <ion-fab-list side="bottom" (click)="goToSearch()">
+            <button ion-fab color="background-color"><ion-icon name="ios-search-outline"></ion-icon></button>
+        </ion-fab-list>
+        <ion-fab-list side="bottom-left" (click)="goToSearch()">
             <button ion-fab color="background-color"><ion-icon name="ios-search-outline"></ion-icon></button>
         </ion-fab-list>
     </ion-fab>

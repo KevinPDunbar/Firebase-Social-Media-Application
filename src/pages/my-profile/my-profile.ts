@@ -7,6 +7,7 @@ import { EditProfilePage } from '../edit-profile/edit-profile';
 import { ViewPostPage } from '../view-post/view-post';
 import { NotificationsPage } from '../notifications/notifications';
 
+import { StreamingMedia, StreamingVideoOptions, StreamingAudioOptions } from '@ionic-native/streaming-media';
 
 /**
  * Generated class for the MyProfilePage page.
@@ -25,7 +26,7 @@ export class MyProfilePage {
     public users = [];
     public unreadNotifications = [];
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController, private streamingMedia: StreamingMedia) {
   }
 
   ionViewDidLoad() {
@@ -62,6 +63,17 @@ openModal(userId, postId) {
     const myModal = this.modal.create(ViewPostPage, { userId, postId }, options);
 
     myModal.present();
+}
+
+startVideo(url) {
+    let options: StreamingVideoOptions = {
+        successCallback: () => { console.log('Finished Video') },
+        errorCallback: (e) => { console.log('Error: ', e) },
+        orientation: 'portrait'
+    };
+
+
+    this.streamingMedia.playVideo(url, options);
 }
 
   goToNotificationsPage() {
@@ -170,6 +182,8 @@ openModal(userId, postId) {
                       let score = (snapshot.val() && snapshot.val().Score);
                       let timeStamp = (snapshot.val() && snapshot.val().Date) || 'There is no date';
                       let postPhotoURL = snapshot.val().photoURL;
+                      let postVideoURL = snapshot.val().videoURL || '';
+                      let postVideoThumbURL = snapshot.val().videoThumbURL || '';
                       let likes = snapshot.val().likes || [];
                       let comments = snapshot.val().comments || [];
                       let haveILiked = false;
@@ -229,7 +243,7 @@ openModal(userId, postId) {
 
                       let name = firstName + " " + lastName;
 
-                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": diff, "photoURL": photoURL, "postPhotoURL": postPhotoURL, "postId": userPostKeys[i], "userId": userId, "likes": likes, "haveILiked": haveILiked, "commentLength": commentLength });
+                      postsClone.unshift({ "name": name, "text": text, "score": score, "date": diff, "photoURL": photoURL, "videoURL": postVideoURL, "thumbURL": postVideoThumbURL, "postPhotoURL": postPhotoURL, "postId": userPostKeys[i], "userId": userId, "likes": likes, "haveILiked": haveILiked, "commentLength": commentLength });
                   });
 
               }

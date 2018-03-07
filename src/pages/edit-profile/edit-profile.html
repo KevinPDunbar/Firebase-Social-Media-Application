@@ -15,7 +15,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding-top>
 
     <ion-fab top right (click)="takeProfilePicture()">
         <button ion-fab>
@@ -33,8 +33,6 @@
     </ion-refresher>
     <ion-card *ngFor="let user of users">
         <img style="width: 100%; height: auto;" src={{user.photoURL}} />
-
-        <h1>{{user.firstName}} {{user.lastName}}</h1>
 
         <form [formGroup]="editProfileForm" value="" (submit)="updateProfile()" novalidate>
             <!--divs-->

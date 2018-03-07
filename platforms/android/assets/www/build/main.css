@@ -1,3 +1,19 @@
+.loginForm {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.postInteractionIcons {
+  margin-bottom: -15px;
+}
+
+.attachIcon {
+  width: 40px !important;
+  height: 40px !important;
+  margin-right: 10px;
+}
+
 .videoContainer {
   text-align: center;
 }
