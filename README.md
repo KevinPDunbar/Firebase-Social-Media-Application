@@ -17,12 +17,11 @@ Features:
 
 <p align="center">
   <img src="https://i.imgur.com/w3hlndC.png" width="350" title="hover text">
-  <img src="https://i.imgur.com/tvXLiRU.png" width="350" alt="accessibility text">
+  <img src="https://i.imgur.com/FuzWdzD.jpg" width="350" alt="accessibility text">
 </p>
 
 <p align="center">
   <img src="https://i.imgur.com/7sS3IRU.png" width="350" title="hover text">
-  <img src="https://i.imgur.com/42TzDxi.png" width="350" alt="accessibility text">
 </p>
 
 
